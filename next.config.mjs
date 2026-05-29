@@ -1,16 +1,17 @@
 /** @type {import('next').NextConfig} */
-import createNextIntlPlugin from "next-intl/plugin";
+import createNextIntlPlugin from 'next-intl/plugin';
 
 const withNextIntl = createNextIntlPlugin();
 
 const config = () => {
   /** @type {import('next').NextConfig} */
   const config = {
+    cacheComponents: true,
     redirects: async () => {
       return [
         {
-          source: "/",
-          destination: "/guide",
+          source: '/',
+          destination: '/guide',
           permanent: true,
         },
       ];

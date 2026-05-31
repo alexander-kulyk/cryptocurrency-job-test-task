@@ -55,7 +55,7 @@ const LandingNav: React.FC = () => {
           <li key={link.key}>
             <a
               href={link.href}
-              className="text-sm font-medium text-landing-muted transition-colors hover:text-landing-foreground"
+              className="block rounded-lg px-6 py-4 text-sm font-medium text-landing-foreground transition-colors hover:bg-[#f8f8f8] focus-visible:bg-[#f8f8f8] focus-visible:outline-none"
             >
               {t(`nav.${link.key}`)}
             </a>
@@ -101,7 +101,7 @@ const LandingNav: React.FC = () => {
                   <a
                     href={link.href}
                     onClick={close}
-                    className="block rounded-xl px-3 py-3 text-base font-medium text-landing-foreground transition-colors hover:bg-landing-foreground/5"
+                    className="block rounded-lg px-3 py-3 text-base font-medium text-landing-foreground transition-colors hover:bg-[#f8f8f8] focus-visible:bg-[#f8f8f8] focus-visible:outline-none"
                   >
                     {t(`nav.${link.key}`)}
                   </a>

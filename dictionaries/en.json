@@ -74,10 +74,16 @@
         },
         "share": {
           "brand": "Gifty",
-          "eyebrow": "Create, add, share",
+          "eyebrow": "Create, add, share.",
           "title": "Everything you need to start",
           "body": "Everything you need to start receiving gifts without the friction."
         }
+      },
+      "badge": "It's that simple",
+      "headlineLines": {
+        "one": "THREE",
+        "two": "STEPS TO",
+        "three": "DROPS"
       }
     },
     "benefits": {

@@ -130,8 +130,8 @@ const LandingManifesto: React.FC = () => {
                 <Image
                   src='/landing/manifesto-smile.svg'
                   alt=''
-                  width={34}
-                  height={33}
+                  width={70}
+                  height={70}
                   unoptimized
                   className='h-auto w-full'
                 />

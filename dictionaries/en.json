@@ -26,5 +26,75 @@
   "errors": {
     "title": "Something went wrong",
     "ok": "OK"
+  },
+  "landing": {
+    "brand": "PHASE",
+    "nav": {
+      "home": "Home",
+      "howItWorks": "How it works",
+      "features": "Features",
+      "forWhom": "For whom",
+      "login": "Log in",
+      "openMenu": "Open menu",
+      "closeMenu": "Close menu"
+    },
+    "hero": {
+      "badge": "Independent minds only",
+      "wordmarkAlt": "PHASE wordmark in zebra fur lettering",
+      "tagline": "Phase is your personal editorial storefront.",
+      "cta": "Create your Phase"
+    },
+    "manifesto": {
+      "eyebrow": "Creators inspire millions every single day",
+      "headline": "Phase is a space for creators to be seen",
+      "imageAlt": "Editorial portrait of creators",
+      "captionPrimary": "Get seen, not buried",
+      "captionSecondary": "Only your real concepts, your curated drops, and the community that stands by your side"
+    },
+    "steps": {
+      "headline": "Three steps to drops",
+      "accentWord": "START",
+      "cards": {
+        "account": {
+          "brand": "Gifty",
+          "eyebrow": "01",
+          "title": "Create your account",
+          "body": "Sign up in under a minute. Claim your unique name and make the space yours."
+        },
+        "share": {
+          "brand": "Gifty",
+          "eyebrow": "Create, add, share",
+          "title": "Everything you need to start",
+          "body": "Everything you need to start receiving gifts without the friction."
+        }
+      }
+    },
+    "benefits": {
+      "exhibition": {
+        "description": "A premium editorial layout featuring your aesthetic",
+        "title": "Exhibition",
+        "tag": "100% your DNA"
+      },
+      "capsules": {
+        "description": "Publish, modify your capsule drops instantly.",
+        "title": "Capsules",
+        "tag": "No messy feeds"
+      },
+      "telemetry": {
+        "description": "Visitors get live updates on what's currently available.",
+        "title": "Telemetry",
+        "tag": "No missed drops"
+      },
+      "domain": {
+        "description": "A short, clean web address — phase.com/your-name.",
+        "title": "Domain",
+        "tag": "Instant access"
+      },
+      "impact": {
+        "description": "Discover what your audience interacts with most.",
+        "title": "Impact",
+        "tag": "Deep audience data"
+      }
+    }
   }
 }

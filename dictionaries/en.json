@@ -17,6 +17,71 @@
       "triggerSend": "Select the token you send",
       "triggerReceive": "Select the token you receive"
     },
+    "footerNote": "Non-custodial · No sign-up · Audited contracts",
+    "modal": {
+      "title": "Select a coin to send",
+      "close": "Close",
+      "search": "Search name or ticker",
+      "allCoins": "All coins"
+    },
+    "steps": {
+      "progressLabel": "Swap progress",
+      "continue": "Continue",
+      "back": "Back",
+      "convert": {
+        "eyebrow": "You swap",
+        "title": "Convert",
+        "subtitle": "Swap 30+ assets at the best market rate."
+      }
+    },
+    "recipient": {
+      "eyebrow": "Recipient",
+      "title": "Recipient",
+      "subtitle": "Where should we send your crypto?",
+      "label": "Recipient {symbol} address",
+      "placeholder": "Paste the destination {symbol} wallet",
+      "paste": "Paste",
+      "helper": "On the Bitcoin network. Double-check before sending — transfers can't be reversed.",
+      "guarantee": "Your funds are protected by Nova's <strong>best-rate guarantee</strong>. No account needed.",
+      "invalid": "Enter a valid wallet address.",
+      "review": "Review swap"
+    },
+    "review": {
+      "eyebrow": "Order summary",
+      "title": "Review",
+      "subtitle": "Confirm the details before you swap.",
+      "rate": "Rate",
+      "rateValue": "1 {fromSymbol} = {rate} {toSymbol}",
+      "networkFee": "Network fee",
+      "arrival": "Arrival",
+      "arrivalValue": "≈ 5 minutes",
+      "toAddress": "To address",
+      "confirm": "Confirm swap"
+    },
+    "processing": {
+      "eyebrow": "In progress",
+      "title": "Swapping your crypto",
+      "title2": "Processing",
+      "subtitle": "Hang tight — this only takes a moment.",
+      "summary": "{fromAmount} {fromSymbol} → {toAmount} {toSymbol}",
+      "stages": {
+        "deposit": "Confirming deposit",
+        "exchange": "Exchanging on Nova Pool",
+        "send": "Sending to your wallet"
+      }
+    },
+    "done": {
+      "eyebrow": "Receipt",
+      "title": "Swap complete",
+      "title2": "Done",
+      "subtitle": "Your swap is on its way.",
+      "message": "Your <strong>{amount} {symbol}</strong> is on its way and should arrive in about 5 minutes.",
+      "sent": "Sent",
+      "received": "Received",
+      "transaction": "Transaction",
+      "viewExplorer": "View on explorer",
+      "newSwap": "Start a new swap"
+    },
     "success": {
       "title": "Swap successful",
       "message": "You have successfully exchanged {fromSymbol} {fromAmount} → {toSymbol} {toAmount}",
@@ -26,5 +91,92 @@
   "errors": {
     "title": "Something went wrong",
     "ok": "OK"
+  },
+  "landing": {
+    "brand": "PHASE",
+    "nav": {
+      "home": "Home",
+      "howItWorks": "How it works",
+      "features": "Features",
+      "forWhom": "For whom",
+      "login": "Log in",
+      "openMenu": "Open menu",
+      "closeMenu": "Close menu"
+    },
+    "hero": {
+      "badge": "Independent minds only",
+      "wordmarkAlt": "PHASE wordmark in zebra fur lettering",
+      "tagline": "Phase is your personal editorial storefront.",
+      "cta": "Create your Phase"
+    },
+    "manifesto": {
+      "eyebrow": "Creators inspire millions every single day",
+      "headline": "Phase is a space for creators to be seen",
+      "headlineLines": {
+        "one": "PHASE IS A",
+        "two": "SPACE FOR",
+        "three": "CREATORS TO",
+        "four": "BE SEEN"
+      },
+      "imageAlt": "Editorial portrait of creators",
+      "actionAlt": "Action not just words",
+      "audienceNote": "Just you and your audience",
+      "captionPrimary": "Get seen, not buried",
+      "captionSecondary": "Only your real concepts, your curated drops, and the community that stands by your side",
+      "tribeLine": "Just you and your tribe",
+      "noiseLine": "Zero algorithm noise.",
+      "communityBody": "Only your raw concepts, your curated drops, and the community that stands by your side"
+    },
+    "steps": {
+      "headline": "Three steps to drops",
+      "accentWord": "START",
+      "cards": {
+        "account": {
+          "brand": "Gifty",
+          "eyebrow": "01",
+          "title": "Create your account",
+          "body": "Sign up in under a minute. Claim your unique name and make the space yours."
+        },
+        "share": {
+          "brand": "Gifty",
+          "eyebrow": "Create, add, share.",
+          "title": "Everything you need to start",
+          "body": "Everything you need to start receiving gifts without the friction."
+        }
+      },
+      "badge": "It's that simple",
+      "headlineLines": {
+        "one": "THREE",
+        "two": "STEPS TO",
+        "three": "DROPS"
+      }
+    },
+    "benefits": {
+      "exhibition": {
+        "description": "A premium editorial layout featuring your aesthetic",
+        "title": "Exhibition",
+        "tag": "100% your DNA"
+      },
+      "capsules": {
+        "description": "Publish, modify your capsule drops instantly.",
+        "title": "Capsules",
+        "tag": "No messy feeds"
+      },
+      "telemetry": {
+        "description": "Visitors get live updates on what's currently available.",
+        "title": "Telemetry",
+        "tag": "No missed drops"
+      },
+      "domain": {
+        "description": "A short, clean web address — phase.com/your-name.",
+        "title": "Domain",
+        "tag": "Instant access"
+      },
+      "impact": {
+        "description": "Discover what your audience interacts with most.",
+        "title": "Impact",
+        "tag": "Deep audience data"
+      }
+    }
   }
 }

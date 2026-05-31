@@ -6,3 +6,5 @@ export { TokenIcon } from "./TokenIcon";
 export type { ITokenIconProps } from "./TokenIcon";
 export { Spinner } from "./Spinner";
 export type { ISpinnerProps } from "./Spinner";
+export { Pill } from "./Pill";
+export type { IPillProps } from "./Pill";

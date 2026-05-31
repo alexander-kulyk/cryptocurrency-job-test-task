@@ -82,6 +82,30 @@
   --ease-swap: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* ── Landing page design tokens (Task 2) ─────────────────────────────
+   The /design landing has two surface modes: a light hero/manifesto and a
+   near-black benefits/steps area. Yellow is the brand accent (CTA + active
+   titles), purple is the secondary callout/pill accent. Token names map to
+   Tailwind v4 utilities: --color-* → bg/text/border-*. */
+@theme {
+  --color-landing-ink: hsl(0 0% 4%); /* near-black section background */
+  --color-landing-surface: hsl(0 0% 100%); /* light section background */
+  --color-landing-foreground: hsl(0 0% 8%); /* text on light */
+  --color-landing-muted: hsl(0 0% 42%); /* secondary text on light */
+  --color-landing-on-ink: hsl(0 0% 100%); /* text on dark */
+  --color-landing-on-ink-muted: hsl(0 0% 64%); /* secondary text on dark */
+  --color-landing-accent: hsl(270 92% 72%); /* purple pill / callout */
+  --color-landing-accent-foreground: hsl(270 60% 14%);
+  --color-landing-highlight: hsl(48 100% 50%); /* yellow CTA / active title */
+  --color-landing-highlight-foreground: hsl(0 0% 8%);
+  --color-landing-row-border: hsl(0 0% 16%); /* benefit row dividers */
+
+  /* Content max-widths — kept in sync with the breakpoint tokens above so
+     `max-w-laptop`/`max-w-desktop` line up with the shared breakpoints config. */
+  --container-laptop: 1280px;
+  --container-desktop: 1920px;
+}
+
 .dark {
   --color-primary: yellow; /* color for dark */
 }

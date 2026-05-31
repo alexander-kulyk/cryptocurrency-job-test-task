@@ -17,6 +17,71 @@
       "triggerSend": "Виберіть токен, який віддаєте",
       "triggerReceive": "Виберіть токен, який отримуєте"
     },
+    "footerNote": "Без зберігання · Без реєстрації · Перевірені контракти",
+    "modal": {
+      "title": "Виберіть монету для відправлення",
+      "close": "Закрити",
+      "search": "Пошук за назвою або тикером",
+      "allCoins": "Усі монети"
+    },
+    "steps": {
+      "progressLabel": "Прогрес обміну",
+      "continue": "Продовжити",
+      "back": "Назад",
+      "convert": {
+        "eyebrow": "Ви обмінюєте",
+        "title": "Конвертація",
+        "subtitle": "Обмінюйте 30+ активів за найкращим ринковим курсом."
+      }
+    },
+    "recipient": {
+      "eyebrow": "Отримувач",
+      "title": "Отримувач",
+      "subtitle": "Куди надіслати вашу криптовалюту?",
+      "label": "Адреса {symbol} отримувача",
+      "placeholder": "Вставте адресу гаманця {symbol}",
+      "paste": "Вставити",
+      "helper": "У мережі Bitcoin. Перевірте двічі перед відправленням — перекази неможливо скасувати.",
+      "guarantee": "Ваші кошти захищені <strong>гарантією найкращого курсу</strong> від Nova. Акаунт не потрібен.",
+      "invalid": "Введіть дійсну адресу гаманця.",
+      "review": "Переглянути обмін"
+    },
+    "review": {
+      "eyebrow": "Підсумок замовлення",
+      "title": "Огляд",
+      "subtitle": "Перевірте деталі перед обміном.",
+      "rate": "Курс",
+      "rateValue": "1 {fromSymbol} = {rate} {toSymbol}",
+      "networkFee": "Комісія мережі",
+      "arrival": "Надходження",
+      "arrivalValue": "≈ 5 хвилин",
+      "toAddress": "На адресу",
+      "confirm": "Підтвердити обмін"
+    },
+    "processing": {
+      "eyebrow": "У процесі",
+      "title": "Обмінюємо вашу криптовалюту",
+      "title2": "Обробка",
+      "subtitle": "Зачекайте — це займе лише мить.",
+      "summary": "{fromAmount} {fromSymbol} → {toAmount} {toSymbol}",
+      "stages": {
+        "deposit": "Підтвердження депозиту",
+        "exchange": "Обмін у Nova Pool",
+        "send": "Надсилання на ваш гаманець"
+      }
+    },
+    "done": {
+      "eyebrow": "Квитанція",
+      "title": "Обмін завершено",
+      "title2": "Готово",
+      "subtitle": "Ваш обмін у дорозі.",
+      "message": "Ваші <strong>{amount} {symbol}</strong> у дорозі та мають надійти приблизно за 5 хвилин.",
+      "sent": "Надіслано",
+      "received": "Отримано",
+      "transaction": "Транзакція",
+      "viewExplorer": "Переглянути в експлорері",
+      "newSwap": "Почати новий обмін"
+    },
     "success": {
       "title": "Обмін успішний",
       "message": "Ви успішно обміняли {fromSymbol} {fromAmount} → {toSymbol} {toAmount}",
@@ -26,5 +91,92 @@
   "errors": {
     "title": "Щось пішло не так",
     "ok": "Гаразд"
+  },
+  "landing": {
+    "brand": "PHASE",
+    "nav": {
+      "home": "Головна",
+      "howItWorks": "Як це працює",
+      "features": "Можливості",
+      "forWhom": "Для кого",
+      "login": "Увійти",
+      "openMenu": "Відкрити меню",
+      "closeMenu": "Закрити меню"
+    },
+    "hero": {
+      "badge": "Лише незалежні уми",
+      "wordmarkAlt": "Напис PHASE із зебрового хутра",
+      "tagline": "Phase — це ваша персональна редакційна вітрина.",
+      "cta": "Створити свій Phase"
+    },
+    "manifesto": {
+      "eyebrow": "Творці надихають мільйони щодня",
+      "headline": "Phase — це простір, де творців помічають",
+      "imageAlt": "Редакційний портрет творців",
+      "captionPrimary": "Будьте поміченими, а не загубленими",
+      "captionSecondary": "Лише ваші справжні ідеї, ваші добірні дропи та спільнота, що поруч із вами",
+      "headlineLines": {
+        "one": "PHASE IS A",
+        "two": "SPACE FOR",
+        "three": "CREATORS TO",
+        "four": "BE SEEN"
+      },
+      "actionAlt": "Action not just words",
+      "audienceNote": "Just you and your audience",
+      "tribeLine": "Just you and your tribe",
+      "noiseLine": "Zero algorithm noise.",
+      "communityBody": "Only your raw concepts, your curated drops, and the community that stands by your side"
+    },
+    "steps": {
+      "headline": "Три кроки до дропів",
+      "accentWord": "START",
+      "cards": {
+        "account": {
+          "brand": "Gifty",
+          "eyebrow": "01",
+          "title": "Створіть акаунт",
+          "body": "Реєстрація менш ніж за хвилину. Оберіть унікальне ім'я та зробіть простір своїм."
+        },
+        "share": {
+          "brand": "Gifty",
+          "eyebrow": "Створюй, додавай, ділись.",
+          "title": "Усе для старту",
+          "body": "Усе необхідне, щоб почати отримувати подарунки без зайвих перешкод."
+        }
+      },
+      "badge": "Це так просто",
+      "headlineLines": {
+        "one": "ТРИ",
+        "two": "КРОКИ ДО",
+        "three": "ДРОПІВ"
+      }
+    },
+    "benefits": {
+      "exhibition": {
+        "description": "Преміальний редакційний макет, що підкреслює вашу естетику",
+        "title": "Виставка",
+        "tag": "100% ваша ДНК"
+      },
+      "capsules": {
+        "description": "Публікуйте та змінюйте капсульні дропи миттєво.",
+        "title": "Капсули",
+        "tag": "Жодних хаотичних стрічок"
+      },
+      "telemetry": {
+        "description": "Відвідувачі бачать оновлення в реальному часі про наявне зараз.",
+        "title": "Телеметрія",
+        "tag": "Жодного пропущеного дропу"
+      },
+      "domain": {
+        "description": "Коротка, чиста веб-адреса — phase.com/your-name.",
+        "title": "Домен",
+        "tag": "Миттєвий доступ"
+      },
+      "impact": {
+        "description": "Дізнайтеся, з чим ваша аудиторія взаємодіє найбільше.",
+        "title": "Вплив",
+        "tag": "Глибока аналітика аудиторії"
+      }
+    }
   }
 }

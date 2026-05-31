@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { SwapWidget } from "@/04.widgets";
+import { SwapFlow } from "@/04.widgets";
 
 const SwapView = () => {
   return (
@@ -9,7 +9,7 @@ const SwapView = () => {
           <div className="h-[420px] w-full max-w-md animate-pulse rounded-swap-card bg-swap-surface shadow-swap-card" />
         }
       >
-        <SwapWidget />
+        <SwapFlow />
       </Suspense>
     </section>
   );

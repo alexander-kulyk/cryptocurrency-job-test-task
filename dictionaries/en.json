@@ -47,9 +47,20 @@
     "manifesto": {
       "eyebrow": "Creators inspire millions every single day",
       "headline": "Phase is a space for creators to be seen",
+      "headlineLines": {
+        "one": "PHASE IS A",
+        "two": "SPACE FOR",
+        "three": "CREATORS TO",
+        "four": "BE SEEN"
+      },
       "imageAlt": "Editorial portrait of creators",
+      "actionAlt": "Action not just words",
+      "audienceNote": "Just you and your audience",
       "captionPrimary": "Get seen, not buried",
-      "captionSecondary": "Only your real concepts, your curated drops, and the community that stands by your side"
+      "captionSecondary": "Only your real concepts, your curated drops, and the community that stands by your side",
+      "tribeLine": "Just you and your tribe",
+      "noiseLine": "Zero algorithm noise.",
+      "communityBody": "Only your raw concepts, your curated drops, and the community that stands by your side"
     },
     "steps": {
       "headline": "Three steps to drops",

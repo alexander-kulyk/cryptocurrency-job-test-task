@@ -49,7 +49,18 @@
       "headline": "Phase — це простір, де творців помічають",
       "imageAlt": "Редакційний портрет творців",
       "captionPrimary": "Будьте поміченими, а не загубленими",
-      "captionSecondary": "Лише ваші справжні ідеї, ваші добірні дропи та спільнота, що поруч із вами"
+      "captionSecondary": "Лише ваші справжні ідеї, ваші добірні дропи та спільнота, що поруч із вами",
+      "headlineLines": {
+        "one": "PHASE IS A",
+        "two": "SPACE FOR",
+        "three": "CREATORS TO",
+        "four": "BE SEEN"
+      },
+      "actionAlt": "Action not just words",
+      "audienceNote": "Just you and your audience",
+      "tribeLine": "Just you and your tribe",
+      "noiseLine": "Zero algorithm noise.",
+      "communityBody": "Only your raw concepts, your curated drops, and the community that stands by your side"
     },
     "steps": {
       "headline": "Три кроки до дропів",

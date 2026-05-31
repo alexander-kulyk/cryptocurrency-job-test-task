@@ -46,6 +46,8 @@ export interface ISwapWidgetValues {
   previewFailed: boolean;
   confirmEnabled: boolean;
   isSuccessOpen: boolean;
+  /** Successful preview payload (rate + USD equivalents), or null. */
+  preview: ISwapPreviewResponse | null;
 }
 
 export interface ISwapWidgetHandlers {
@@ -56,6 +58,8 @@ export interface ISwapWidgetHandlers {
   switchAssets: () => void;
   confirm: () => void;
   acknowledgeSuccess: () => void;
+  /** Clears assets, amounts, direction and the cached preview. */
+  reset: () => void;
 }
 
 export interface IUseSwapWidgetResult {
@@ -222,8 +226,7 @@ export const useSwapWidget = (): IUseSwapWidgetResult => {
     setIsSuccessOpen(true);
   }, []);
 
-  const acknowledgeSuccess = useCallback((): void => {
-    setIsSuccessOpen(false);
+  const reset = useCallback((): void => {
     setFromAssetSelected(null);
     setToAssetSelected(null);
     setFromAmount("");
@@ -233,6 +236,11 @@ export const useSwapWidget = (): IUseSwapWidgetResult => {
     runPreview.cancel();
     resetPreview();
   }, [runPreview, resetPreview]);
+
+  const acknowledgeSuccess = useCallback((): void => {
+    setIsSuccessOpen(false);
+    reset();
+  }, [reset]);
 
   const samePair = Boolean(
     fromAsset && toAsset && fromAsset.id === toAsset.id,
@@ -254,6 +262,7 @@ export const useSwapWidget = (): IUseSwapWidgetResult => {
       previewFailed: isPreviewError,
       confirmEnabled,
       isSuccessOpen,
+      preview: previewData ?? null,
     },
     handlers: {
       changeFromAmount,
@@ -263,6 +272,7 @@ export const useSwapWidget = (): IUseSwapWidgetResult => {
       switchAssets,
       confirm,
       acknowledgeSuccess,
+      reset,
     },
   };
 };

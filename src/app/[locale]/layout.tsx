@@ -1,5 +1,6 @@
 import { locales, routing } from "@/i18n";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
+import { setRequestLocale } from "next-intl/server";
 import { Inter } from "next/font/google";
 import { notFound } from "next/navigation";
 import { Toaster } from "sonner";
@@ -33,8 +34,13 @@ const RootLayout = async ({
     notFound();
   }
 
+  // Enable static rendering: provide the locale statically so next-intl does
+  // not read it from request headers (which is illegal outside <Suspense>
+  // under Cache Components).
+  setRequestLocale(locale);
+
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <body className={`${INTER.variable} min-h-screen flex flex-col`}>
         <NextIntlClientProvider>
           <ReduxProvider>

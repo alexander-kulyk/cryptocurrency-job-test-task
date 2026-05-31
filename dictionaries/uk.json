@@ -1,1 +1,30 @@
-{}
+{
+  "swap": {
+    "title": "Конвертація",
+    "selectCryptocurrency": "Виберіть криптовалюту",
+    "youSend": "Ви віддаєте",
+    "youReceive": "Ви отримуєте",
+    "confirm": "Далі",
+    "loading": "Обчислення…",
+    "previewUnavailable": "Курс для цієї пари недоступний.",
+    "switch": "Поміняти токени місцями",
+    "dropdown": {
+      "placeholder": "Вибрати",
+      "search": "Пошук монет",
+      "loading": "Завантаження токенів…",
+      "empty": "Токенів не знайдено",
+      "error": "Не вдалося завантажити токени",
+      "triggerSend": "Виберіть токен, який віддаєте",
+      "triggerReceive": "Виберіть токен, який отримуєте"
+    },
+    "success": {
+      "title": "Обмін успішний",
+      "message": "Ви успішно обміняли {fromSymbol} {fromAmount} → {toSymbol} {toAmount}",
+      "ok": "Гаразд"
+    }
+  },
+  "errors": {
+    "title": "Щось пішло не так",
+    "ok": "Гаразд"
+  }
+}

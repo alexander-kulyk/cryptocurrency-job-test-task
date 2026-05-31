@@ -1,1 +1,30 @@
-{}
+{
+  "swap": {
+    "title": "Convert",
+    "selectCryptocurrency": "Select cryptocurrency",
+    "youSend": "You send",
+    "youReceive": "You receive",
+    "confirm": "Next",
+    "loading": "Calculating…",
+    "previewUnavailable": "Quotes are unavailable for this pair.",
+    "switch": "Swap tokens",
+    "dropdown": {
+      "placeholder": "Select",
+      "search": "Search coins",
+      "loading": "Loading tokens…",
+      "empty": "No tokens found",
+      "error": "Failed to load tokens",
+      "triggerSend": "Select the token you send",
+      "triggerReceive": "Select the token you receive"
+    },
+    "success": {
+      "title": "Swap successful",
+      "message": "You have successfully exchanged {fromSymbol} {fromAmount} → {toSymbol} {toAmount}",
+      "ok": "OK"
+    }
+  },
+  "errors": {
+    "title": "Something went wrong",
+    "ok": "OK"
+  }
+}

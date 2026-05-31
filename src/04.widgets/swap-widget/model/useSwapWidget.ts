@@ -1,0 +1,268 @@
+import { useCallback, useRef, useState } from "react";
+import {
+  useGetAssetsQuery,
+  useGetSwapPreviewMutation,
+  type IAsset,
+  type ISwapPreviewPayload,
+  type ISwapPreviewResponse,
+  type SwapDirection,
+} from "@/06.entities";
+import { useThrottledCallback } from "@/07.shared/hooks";
+
+const PREVIEW_THROTTLE_MS = 600;
+const DEFAULT_FROM_SYMBOL = "USDT";
+const DEFAULT_TO_SYMBOL = "BTC";
+const BALANCE_TYPE: ["main", "trade"] = ["main", "trade"];
+
+const isValidAmount = (value: string): boolean => {
+  const parsed = Number(value);
+  return value.trim() !== "" && Number.isFinite(parsed) && parsed > 0;
+};
+
+const buildPayload = (
+  direction: SwapDirection,
+  amount: string,
+  from: IAsset | null,
+  to: IAsset | null,
+): ISwapPreviewPayload | null => {
+  if (!from || !to || from.id === to.id || !isValidAmount(amount)) {
+    return null;
+  }
+  return {
+    fromAssetId: from.id,
+    toAssetId: to.id,
+    direction,
+    amount,
+    balanceType: BALANCE_TYPE,
+  };
+};
+
+export interface ISwapWidgetValues {
+  fromAsset: IAsset | null;
+  toAsset: IAsset | null;
+  fromAmount: string;
+  toAmount: string;
+  isPreviewLoading: boolean;
+  previewFailed: boolean;
+  confirmEnabled: boolean;
+  isSuccessOpen: boolean;
+}
+
+export interface ISwapWidgetHandlers {
+  changeFromAmount: (value: string) => void;
+  changeToAmount: (value: string) => void;
+  selectFromAsset: (asset: IAsset) => void;
+  selectToAsset: (asset: IAsset) => void;
+  switchAssets: () => void;
+  confirm: () => void;
+  acknowledgeSuccess: () => void;
+}
+
+export interface IUseSwapWidgetResult {
+  values: ISwapWidgetValues;
+  handlers: ISwapWidgetHandlers;
+}
+
+/**
+ * Brain of the swap widget. Owns client state (selected assets, amounts,
+ * direction, success modal) and orchestrates the throttled RTK Query preview.
+ * The default pair (USDT → BTC) is resolved from the assets endpoint and used
+ * as a fallback until the user picks a token, so no init effect is needed.
+ */
+export const useSwapWidget = (): IUseSwapWidgetResult => {
+  const [fromAssetSelected, setFromAssetSelected] = useState<IAsset | null>(
+    null,
+  );
+  const [toAssetSelected, setToAssetSelected] = useState<IAsset | null>(null);
+  const [fromAmount, setFromAmount] = useState("");
+  const [toAmount, setToAmount] = useState("");
+  const [direction, setDirection] = useState<SwapDirection>("from");
+  const [isSuccessOpen, setIsSuccessOpen] = useState(false);
+
+  const requestSeqRef = useRef(0);
+
+  const { data: defaultFromData } = useGetAssetsQuery({
+    search: DEFAULT_FROM_SYMBOL,
+    page: 1,
+  });
+  const { data: defaultToData } = useGetAssetsQuery({
+    search: DEFAULT_TO_SYMBOL,
+    page: 1,
+  });
+
+  const defaultFrom =
+    defaultFromData?.data.find((asset) => asset.symbol === DEFAULT_FROM_SYMBOL) ??
+    defaultFromData?.data[0] ??
+    null;
+  const defaultTo =
+    defaultToData?.data.find((asset) => asset.symbol === DEFAULT_TO_SYMBOL) ??
+    defaultToData?.data[0] ??
+    null;
+
+  const fromAsset = fromAssetSelected ?? defaultFrom;
+  const toAsset = toAssetSelected ?? defaultTo;
+
+  const [triggerPreview, previewState] = useGetSwapPreviewMutation();
+  const {
+    data: previewData,
+    isLoading: isPreviewLoading,
+    isError: isPreviewError,
+    reset: resetPreview,
+  } = previewState;
+
+  const applyPreview = useCallback(
+    (
+      payload: ISwapPreviewPayload,
+      seq: number,
+      data: ISwapPreviewResponse,
+    ): void => {
+      if (seq !== requestSeqRef.current) {
+        return;
+      }
+      if (payload.direction === "from") {
+        setToAmount(data.estimatedReceive);
+      } else {
+        setFromAmount(data.estimatedGive);
+      }
+    },
+    [],
+  );
+
+  const previewWorker = useCallback(
+    async (payload: ISwapPreviewPayload, seq: number): Promise<void> => {
+      try {
+        const data = await triggerPreview(payload).unwrap();
+        applyPreview(payload, seq, data);
+      } catch {
+        // Failures are normalized and surfaced by the global api-error store.
+      }
+    },
+    [triggerPreview, applyPreview],
+  );
+
+  const runPreview = useThrottledCallback(previewWorker, PREVIEW_THROTTLE_MS);
+
+  const requestPreview = useCallback(
+    (
+      nextDirection: SwapDirection,
+      amount: string,
+      from: IAsset | null,
+      to: IAsset | null,
+      onInvalid?: () => void,
+    ): void => {
+      requestSeqRef.current += 1;
+      const payload = buildPayload(nextDirection, amount, from, to);
+      if (payload) {
+        runPreview(payload, requestSeqRef.current);
+      } else {
+        runPreview.cancel();
+        resetPreview();
+        onInvalid?.();
+      }
+    },
+    [runPreview, resetPreview],
+  );
+
+  const changeFromAmount = useCallback(
+    (value: string): void => {
+      setFromAmount(value);
+      setDirection("from");
+      requestPreview("from", value, fromAsset, toAsset, () => setToAmount(""));
+    },
+    [fromAsset, toAsset, requestPreview],
+  );
+
+  const changeToAmount = useCallback(
+    (value: string): void => {
+      setToAmount(value);
+      setDirection("to");
+      requestPreview("to", value, fromAsset, toAsset, () => setFromAmount(""));
+    },
+    [fromAsset, toAsset, requestPreview],
+  );
+
+  const resetAmounts = useCallback((): void => {
+    setFromAmount("");
+    setToAmount("");
+    setDirection("from");
+    requestSeqRef.current += 1;
+    runPreview.cancel();
+    resetPreview();
+  }, [runPreview, resetPreview]);
+
+  const selectFromAsset = useCallback(
+    (asset: IAsset): void => {
+      setFromAssetSelected(asset);
+      resetAmounts();
+    },
+    [resetAmounts],
+  );
+
+  const selectToAsset = useCallback(
+    (asset: IAsset): void => {
+      setToAssetSelected(asset);
+      resetAmounts();
+    },
+    [resetAmounts],
+  );
+
+  const switchAssets = useCallback((): void => {
+    if (!fromAsset || !toAsset) {
+      return;
+    }
+    const nextFrom = toAsset;
+    const nextTo = fromAsset;
+    setFromAssetSelected(nextFrom);
+    setToAssetSelected(nextTo);
+    const amount = direction === "from" ? fromAmount : toAmount;
+    requestPreview(direction, amount, nextFrom, nextTo);
+  }, [fromAsset, toAsset, direction, fromAmount, toAmount, requestPreview]);
+
+  const confirm = useCallback((): void => {
+    setIsSuccessOpen(true);
+  }, []);
+
+  const acknowledgeSuccess = useCallback((): void => {
+    setIsSuccessOpen(false);
+    setFromAssetSelected(null);
+    setToAssetSelected(null);
+    setFromAmount("");
+    setToAmount("");
+    setDirection("from");
+    requestSeqRef.current += 1;
+    runPreview.cancel();
+    resetPreview();
+  }, [runPreview, resetPreview]);
+
+  const samePair = Boolean(
+    fromAsset && toAsset && fromAsset.id === toAsset.id,
+  );
+  const confirmEnabled =
+    Boolean(previewData) &&
+    !isPreviewLoading &&
+    fromAmount.trim() !== "" &&
+    toAmount.trim() !== "" &&
+    !samePair;
+
+  return {
+    values: {
+      fromAsset,
+      toAsset,
+      fromAmount,
+      toAmount,
+      isPreviewLoading,
+      previewFailed: isPreviewError,
+      confirmEnabled,
+      isSuccessOpen,
+    },
+    handlers: {
+      changeFromAmount,
+      changeToAmount,
+      selectFromAsset,
+      selectToAsset,
+      switchAssets,
+      confirm,
+      acknowledgeSuccess,
+    },
+  };
+};

@@ -4,11 +4,6 @@ export interface IThrottled<TArgs extends unknown[]> {
   cancel: () => void;
 }
 
-/**
- * Leading + trailing throttle: invokes `fn` immediately, then at most once
- * per `wait` ms, always flushing the latest arguments on the trailing edge.
- * Reusable building block for rate-limited calls (e.g. swap preview ≤1/600ms).
- */
 export const throttle = <TArgs extends unknown[]>(
   fn: (...args: TArgs) => void,
   wait: number,

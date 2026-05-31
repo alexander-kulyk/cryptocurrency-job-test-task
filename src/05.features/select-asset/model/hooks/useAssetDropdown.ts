@@ -1,8 +1,8 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { useGetAssetsQuery, type IAsset } from "@/06.entities";
-import { useOnClickOutside } from "@/07.shared/hooks";
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useGetAssetsQuery, type IAsset } from '@/06.entities';
+import { useOnClickOutside } from '@/07.shared/hooks';
 
-const SEARCH_DEBOUNCE_MS = 300;
+const SEARCH_DEBOUNCE_MS = 600;
 const SCROLL_THRESHOLD_PX = 64;
 
 export interface IUseAssetDropdownParams {
@@ -36,19 +36,13 @@ export interface IUseAssetDropdownResult {
   handlers: IUseAssetDropdownHandlers;
 }
 
-/**
- * Owns dropdown UI state (open, search, pagination) and bridges it to the
- * RTK Query assets endpoint. Pages are loaded on scroll-to-bottom; the search
- * input is debounced and resets pagination. No server data is mirrored into
- * local state — the list always comes from the query cache.
- */
 export const useAssetDropdown = ({
   onSelect,
 }: IUseAssetDropdownParams): IUseAssetDropdownResult => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [searchTerm, setSearchTermState] = useState("");
-  const [debouncedSearch, setDebouncedSearch] = useState("");
-  const [page, setPage] = useState(1);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [searchTerm, setSearchTermState] = useState<string>('');
+  const [debouncedSearch, setDebouncedSearch] = useState<string>('');
+  const [page, setPage] = useState<number>(1);
 
   const containerRef = useRef<HTMLDivElement | null>(null);
   const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -99,8 +93,8 @@ export const useAssetDropdown = ({
     (asset: IAsset): void => {
       onSelect(asset);
       setIsOpen(false);
-      setSearchTermState("");
-      setDebouncedSearch("");
+      setSearchTermState('');
+      setDebouncedSearch('');
       setPage(1);
       if (debounceTimer.current) {
         clearTimeout(debounceTimer.current);
@@ -114,7 +108,11 @@ export const useAssetDropdown = ({
       const element = event.currentTarget;
       const distanceToBottom =
         element.scrollHeight - element.scrollTop - element.clientHeight;
-      if (distanceToBottom <= SCROLL_THRESHOLD_PX && hasNextPage && !isFetching) {
+      if (
+        distanceToBottom <= SCROLL_THRESHOLD_PX &&
+        hasNextPage &&
+        !isFetching
+      ) {
         setPage((previous) => previous + 1);
       }
     },

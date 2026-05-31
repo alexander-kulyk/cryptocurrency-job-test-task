@@ -1,6 +1,6 @@
-export { useSwapWidget } from "./useSwapWidget";
+export { useSwapWidget } from "./hooks/useSwapWidget";
 export type {
   ISwapWidgetValues,
   ISwapWidgetHandlers,
   IUseSwapWidgetResult,
-} from "./useSwapWidget";
+} from "./hooks/useSwapWidget";

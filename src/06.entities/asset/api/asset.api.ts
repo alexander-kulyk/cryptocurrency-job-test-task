@@ -1,15 +1,8 @@
-import { baseRtkApi } from "@/07.shared/api";
-import type { IAssetsQueryArg, IAssetsResponse } from "../model";
+import { baseRtkApi } from '@/07.shared/api';
+import type { IAssetsQueryArg, IAssetsResponse } from '../model';
 
-// Same-origin path; rewritten to https://api.miex.one/api/v1/public/assets
-// by next.config.mjs to avoid browser CORS.
-const ASSETS_URL = "/api/miex/assets";
+const ASSETS_URL = '/api/miex/assets';
 
-/**
- * Assets endpoint with cursor-style infinite scroll: one cache entry per
- * search term (page is dropped from the cache key) and pages are merged into
- * that entry, so RTK Query owns the accumulated list.
- */
 export const assetApi = baseRtkApi.injectEndpoints({
   endpoints: (builder) => ({
     getAssets: builder.query<IAssetsResponse, IAssetsQueryArg>({

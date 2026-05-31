@@ -1,42 +1,34 @@
-import { locales, routing } from "@/i18n";
-import { hasLocale, NextIntlClientProvider } from "next-intl";
-import { setRequestLocale } from "next-intl/server";
-import { Inter } from "next/font/google";
-import { notFound } from "next/navigation";
-import { Toaster } from "sonner";
-import { AppLayout } from "../layouts";
-import { ReduxProvider, ThemeProvider } from "../providers";
-import "../styles/globals.css";
+import { locales, routing } from '@/i18n';
+import { hasLocale, NextIntlClientProvider } from 'next-intl';
+import { setRequestLocale } from 'next-intl/server';
+import { Inter } from 'next/font/google';
+import { notFound } from 'next/navigation';
+import { Toaster } from 'sonner';
+import { AppLayout } from '../layouts';
+import { ReduxProvider, ThemeProvider } from '../providers';
+import '../styles/globals.css';
+
+interface IRootLayoutProps {
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
+}
 
 const INTER = Inter({
-  weight: ["100", "300", "400", "500", "700", "900"],
-  variable: "--font-inter",
-  subsets: ["cyrillic-ext", "latin-ext"],
+  weight: ['100', '300', '400', '500', '700', '900'],
+  variable: '--font-inter',
+  subsets: ['cyrillic-ext', 'latin-ext'],
 });
-
-//fake
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }
 
-// fake
-
-const RootLayout = async ({
-  children,
-  params,
-}: {
-  children: React.ReactNode;
-  params: Promise<{ locale: string }>;
-}) => {
+const RootLayout = async ({ children, params }: IRootLayoutProps) => {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) {
     notFound();
   }
 
-  // Enable static rendering: provide the locale statically so next-intl does
-  // not read it from request headers (which is illegal outside <Suspense>
-  // under Cache Components).
   setRequestLocale(locale);
 
   return (
@@ -45,8 +37,8 @@ const RootLayout = async ({
         <NextIntlClientProvider>
           <ReduxProvider>
             <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
+              attribute='class'
+              defaultTheme='system'
               enableSystem
               disableTransitionOnChange
             >

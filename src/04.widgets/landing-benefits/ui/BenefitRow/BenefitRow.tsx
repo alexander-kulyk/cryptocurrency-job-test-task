@@ -79,8 +79,8 @@ const BenefitRow: React.FC<IBenefitRowProps> = ({
           sizes="100vw"
           className="object-cover"
         />
-        <div className="absolute inset-0 bg-landing-ink/75" />
-        <div className="absolute inset-0 bg-linear-to-r from-landing-ink via-landing-ink/40 to-landing-ink" />
+        <div className="absolute inset-0 bg-landing-ink/55" />
+        <div className="absolute inset-0 bg-linear-to-r from-landing-ink via-landing-ink/25 to-landing-ink" />
       </motion.div>
 
       <p className="max-w-xs text-center text-sm text-landing-on-ink-muted tablet:text-left">

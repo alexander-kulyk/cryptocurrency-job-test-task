@@ -34,7 +34,14 @@ const AssetSelectModal: React.FC<IAssetSelectModalProps> = ({
 }) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const { values, handlers } = useAssetSearch({ enabled: isOpen });
-  const { searchTerm, assets, isLoading, isFetching, isError } = values;
+  const {
+    searchTerm,
+    assets,
+    isLoading,
+    isFetching,
+    isFetchingMore,
+    isError,
+  } = values;
 
   useEffect(() => {
     if (isOpen) {
@@ -69,7 +76,9 @@ const AssetSelectModal: React.FC<IAssetSelectModalProps> = ({
   );
 
   const showEmptyState = !isLoading && !isError && assets.length === 0;
-  const showFooterSpinner = isFetching && assets.length > 0;
+  const showLoadMoreOverlay = isFetchingMore;
+  const showSearchSpinner =
+    isFetching && !isFetchingMore && searchTerm.trim().length > 0;
 
   return (
     <Modal
@@ -104,8 +113,14 @@ const AssetSelectModal: React.FC<IAssetSelectModalProps> = ({
             value={searchTerm}
             onChange={handleSearchChange}
             placeholder={labels.searchPlaceholder}
-            className="w-full rounded-swap-field border border-swap-strong-border bg-swap-elevated py-4 pl-12 pr-4 text-lg text-swap-foreground outline-none placeholder:text-swap-muted focus-visible:border-swap-accent focus-visible:ring-3 focus-visible:ring-swap-accent/20"
+            className="w-full rounded-swap-field border border-swap-strong-border bg-swap-elevated py-4 pl-12 pr-12 text-lg text-swap-foreground outline-none placeholder:text-swap-muted focus-visible:border-swap-accent focus-visible:ring-3 focus-visible:ring-swap-accent/20"
           />
+          {showSearchSpinner ? (
+            <Spinner
+              label={labels.loading}
+              className="pointer-events-none absolute right-4 top-1/2 size-5 -translate-y-1/2 text-swap-accent"
+            />
+          ) : null}
         </div>
 
         <div className="mt-4 flex flex-wrap gap-2">
@@ -139,73 +154,75 @@ const AssetSelectModal: React.FC<IAssetSelectModalProps> = ({
         </p>
       </div>
 
-      <div
-        onScroll={handlers.handleListScroll}
-        className="scroll-bar flex max-h-[26rem] flex-col gap-1 overflow-y-auto px-4 pb-5 pt-3 sm:px-6"
-      >
-        {isLoading ? (
-          <div className="flex items-center justify-center gap-2 py-8 text-sm text-swap-muted">
-            <Spinner label={labels.loading} />
-            {labels.loading}
-          </div>
-        ) : null}
+      <div className="relative">
+        <div
+          onScroll={handlers.handleListScroll}
+          className="scroll-bar flex max-h-[26rem] flex-col gap-1 overflow-y-auto px-4 pb-5 pt-3 sm:px-6"
+        >
+          {isLoading ? (
+            <div className="flex items-center justify-center gap-2 py-8 text-sm text-swap-muted">
+              <Spinner label={labels.loading} />
+              {labels.loading}
+            </div>
+          ) : null}
 
-        {isError ? (
-          <p className="py-8 text-center text-sm text-swap-muted">
-            {labels.error}
-          </p>
-        ) : null}
+          {isError ? (
+            <p className="py-8 text-center text-sm text-swap-muted">
+              {labels.error}
+            </p>
+          ) : null}
 
-        {showEmptyState ? (
-          <p className="py-8 text-center text-sm text-swap-muted">
-            {labels.empty}
-          </p>
-        ) : null}
+          {showEmptyState ? (
+            <p className="py-8 text-center text-sm text-swap-muted">
+              {labels.empty}
+            </p>
+          ) : null}
 
-        {assets.map((asset) => {
-          const network = getNetworkLabel(asset.symbol);
-          const isActive = asset.id === selectedAsset?.id;
-          const rowClasses = classes(
-            "flex w-full items-center gap-4 rounded-swap-field px-3 py-3 text-left transition-colors hover:bg-swap-elevated",
-            isActive && "bg-swap-elevated",
-          );
-          return (
-            <button
-              key={asset.id}
-              type="button"
-              onClick={() => handleSelect(asset)}
-              className={rowClasses}
-              aria-pressed={isActive}
-            >
-              <TokenIcon
-                src={asset.assetImage}
-                symbol={asset.symbol}
-                size={40}
-              />
-              <span className="flex min-w-0 flex-col">
-                <span className="truncate text-base font-bold text-swap-foreground">
-                  {asset.symbol}
+          {assets.map((asset) => {
+            const network = getNetworkLabel(asset.symbol);
+            const isActive = asset.id === selectedAsset?.id;
+            const rowClasses = classes(
+              "flex w-full items-center gap-4 rounded-swap-field px-3 py-3 text-left transition-colors hover:bg-swap-elevated",
+              isActive && "bg-swap-elevated",
+            );
+            return (
+              <button
+                key={asset.id}
+                type="button"
+                onClick={() => handleSelect(asset)}
+                className={rowClasses}
+                aria-pressed={isActive}
+              >
+                <TokenIcon
+                  src={asset.assetImage}
+                  symbol={asset.symbol}
+                  size={40}
+                />
+                <span className="flex min-w-0 flex-col">
+                  <span className="truncate text-base font-bold text-swap-foreground">
+                    {asset.symbol}
+                  </span>
+                  <span className="truncate text-sm text-swap-muted">
+                    {asset.name}
+                  </span>
                 </span>
-                <span className="truncate text-sm text-swap-muted">
-                  {asset.name}
-                </span>
-              </span>
-              {network ? (
-                <Pill
-                  tone="outline"
-                  size="sm"
-                  className="ml-auto border-swap-strong-border text-swap-muted"
-                >
-                  {network}
-                </Pill>
-              ) : null}
-            </button>
-          );
-        })}
+                {network ? (
+                  <Pill
+                    tone="outline"
+                    size="sm"
+                    className="ml-auto border-swap-strong-border text-swap-muted"
+                  >
+                    {network}
+                  </Pill>
+                ) : null}
+              </button>
+            );
+          })}
+        </div>
 
-        {showFooterSpinner ? (
-          <div className="flex justify-center py-3 text-swap-muted">
-            <Spinner label={labels.loading} />
+        {showLoadMoreOverlay ? (
+          <div className="pointer-events-none absolute inset-x-4 bottom-0 flex h-20 items-center justify-center rounded-swap-field bg-swap-surface/45 text-swap-accent backdrop-blur-[3px] sm:inset-x-6">
+            <Spinner label={labels.loading} className="size-6" />
           </div>
         ) : null}
       </div>

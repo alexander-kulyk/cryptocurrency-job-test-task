@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { assetApi, useGetAssetsQuery, type IAsset } from "@/06.entities";
-import { useAbortOnUnmount, useAppDispatch } from "@/07.shared/hooks";
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { assetApi, useGetAssetsQuery, type IAsset } from '@/06.entities';
+import { useAbortOnUnmount, useAppDispatch } from '@/07.shared/hooks';
 
 const SEARCH_DEBOUNCE_MS = 600;
-const SCROLL_THRESHOLD_PX = 64;
+const LOAD_MORE_ZONE_PX = 96;
 
 export interface IUseAssetSearchParams {
   /** When false, the underlying query is skipped (e.g. modal closed). */
@@ -17,6 +17,8 @@ export interface IUseAssetSearchValues {
   isLoading: boolean;
   /** Any request (incl. next page) is in flight. */
   isFetching: boolean;
+  /** A paginated follow-up page is loading. */
+  isFetchingMore: boolean;
   isError: boolean;
   hasNextPage: boolean;
 }
@@ -41,8 +43,8 @@ export interface IUseAssetSearchResult {
 export const useAssetSearch = ({
   enabled,
 }: IUseAssetSearchParams): IUseAssetSearchResult => {
-  const [searchTerm, setSearchTermState] = useState<string>("");
-  const [debouncedSearch, setDebouncedSearch] = useState<string>("");
+  const [searchTerm, setSearchTermState] = useState<string>('');
+  const [debouncedSearch, setDebouncedSearch] = useState<string>('');
   const [page, setPage] = useState<number>(1);
 
   const dispatch = useAppDispatch();
@@ -60,11 +62,12 @@ export const useAssetSearch = ({
 
   const assets = data?.data ?? [];
   const hasNextPage = data?.hasNextPage ?? false;
+  const isFetchingMore = page > 1 && isFetching && assets.length > 0;
 
   const abortAssetsRequest = useCallback(
     (search: string, targetPage: number): void => {
       dispatch(
-        assetApi.util.getRunningQueryThunk("getAssets", {
+        assetApi.util.getRunningQueryThunk('getAssets', {
           search,
           page: targetPage,
         }),
@@ -78,8 +81,6 @@ export const useAssetSearch = ({
     const shouldAbortPrevious =
       previous?.enabled && (!enabled || previous.search !== debouncedSearch);
 
-    // Do not abort on page-only changes: the endpoint cache key is the search
-    // term, and aborting by the previous page can cancel the next-page request.
     if (shouldAbortPrevious) {
       abortAssetsRequest(previous.search, previous.page);
     }
@@ -91,9 +92,6 @@ export const useAssetSearch = ({
     };
   }, [abortAssetsRequest, debouncedSearch, enabled, page]);
 
-  // RTK Query keeps query requests running after unmount; abort the in-flight
-  // assets fetch when the modal/host unmounts. The cache key is keyed on
-  // `search`, so the current search resolves the running paginated request.
   useAbortOnUnmount(() => {
     const current = previousQueryRef.current;
     if (current?.enabled) {
@@ -122,8 +120,8 @@ export const useAssetSearch = ({
 
   const resetSearch = useCallback((): void => {
     clearDebounce();
-    setSearchTermState("");
-    setDebouncedSearch("");
+    setSearchTermState('');
+    setDebouncedSearch('');
     setPage(1);
   }, [clearDebounce]);
 
@@ -135,7 +133,7 @@ export const useAssetSearch = ({
       const distanceToBottom =
         element.scrollHeight - element.scrollTop - element.clientHeight;
       if (
-        distanceToBottom <= SCROLL_THRESHOLD_PX &&
+        distanceToBottom <= LOAD_MORE_ZONE_PX &&
         hasNextPage &&
         !isFetching
       ) {
@@ -151,6 +149,7 @@ export const useAssetSearch = ({
       assets,
       isLoading,
       isFetching,
+      isFetchingMore,
       isError,
       hasNextPage,
     },

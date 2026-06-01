@@ -112,8 +112,18 @@ const SwapFlow: React.FC = () => {
     error: t("dropdown.error"),
   };
 
+  const layoutTransition = {
+    duration: stepDuration,
+    ease: EASE_OUT,
+    layout: { duration: stepDuration, ease: EASE_OUT },
+  };
+
   return (
-    <div className="flex w-full flex-col items-center gap-7">
+    <motion.div
+      layout
+      transition={layoutTransition}
+      className="flex w-full flex-col items-center gap-7"
+    >
       <header className="text-center">
         <h1 className="text-4xl font-bold text-swap-title sm:text-5xl">
           {headings[step].title}
@@ -124,8 +134,9 @@ const SwapFlow: React.FC = () => {
       </header>
 
       <motion.div
-        layout
-        transition={{ duration: stepDuration, ease: EASE_OUT }}
+        layout="size"
+        style={{ transformOrigin: "top center" }}
+        transition={layoutTransition}
         className="w-full max-w-[40rem] overflow-hidden rounded-swap-card border border-swap-border bg-swap-surface p-6 shadow-swap-card sm:p-10"
       >
         <AnimatePresence mode="wait" initial={false}>
@@ -142,10 +153,14 @@ const SwapFlow: React.FC = () => {
         </AnimatePresence>
       </motion.div>
 
-      <p className="flex items-center justify-center gap-2 text-center text-sm text-swap-subtle">
+      <motion.p
+        layout
+        transition={layoutTransition}
+        className="flex items-center justify-center gap-2 text-center text-sm text-swap-subtle"
+      >
         <ShieldCheck className="size-4" aria-hidden />
         {t("footerNote")}
-      </p>
+      </motion.p>
 
       <AssetSelectModal
         isOpen={selectTarget !== null}
@@ -154,7 +169,7 @@ const SwapFlow: React.FC = () => {
         selectedAsset={selectedForModal}
         labels={modalLabels}
       />
-    </div>
+    </motion.div>
   );
 };
 

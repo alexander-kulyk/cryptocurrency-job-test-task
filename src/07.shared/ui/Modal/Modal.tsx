@@ -26,6 +26,8 @@ export interface IModalProps {
   children: React.ReactNode;
   className?: string;
   labelledBy?: string;
+  placement?: "center" | "top";
+  animateSize?: boolean;
 }
 
 const Modal: React.FC<IModalProps> = ({
@@ -34,6 +36,8 @@ const Modal: React.FC<IModalProps> = ({
   children,
   className,
   labelledBy,
+  placement = "center",
+  animateSize = false,
 }) => {
   const reduceMotion = useReducedMotion();
 
@@ -63,12 +67,24 @@ const Modal: React.FC<IModalProps> = ({
 
   const overlayDuration = reduceMotion ? 0 : 0.2;
   const panelDuration = reduceMotion ? 0 : 0.24;
+  const isTopPlaced = placement === "top";
+  const panelTransition = {
+    duration: panelDuration,
+    ease: [0.22, 1, 0.36, 1],
+    layout: { duration: panelDuration, ease: [0.22, 1, 0.36, 1] },
+  };
 
   return createPortal(
     <AnimatePresence>
       {isOpen ? (
         <motion.div
-          className="fixed inset-0 z-50 flex cursor-pointer items-center justify-center bg-swap-page/90 p-4 backdrop-blur-sm"
+          className={classes(
+            "fixed inset-0 z-50 flex cursor-pointer justify-center bg-swap-page/90 px-4 backdrop-blur-sm",
+            isTopPlaced
+              ? "items-start overflow-y-auto pb-8 pt-[clamp(3rem,9vh,7rem)]"
+              : "items-center py-4",
+          )}
+          layoutRoot={animateSize ? true : undefined}
           variants={overlayVariants}
           initial="hidden"
           animate="visible"
@@ -81,6 +97,10 @@ const Modal: React.FC<IModalProps> = ({
             role="dialog"
             aria-modal="true"
             aria-labelledby={labelledBy}
+            layout={animateSize ? "size" : undefined}
+            style={{
+              transformOrigin: isTopPlaced ? "top center" : "center",
+            }}
             className={classes(
               "w-full max-w-sm cursor-default rounded-swap-card border border-swap-border bg-swap-surface p-6 text-swap-foreground shadow-swap-dropdown",
               className,
@@ -89,7 +109,7 @@ const Modal: React.FC<IModalProps> = ({
             initial="hidden"
             animate="visible"
             exit="hidden"
-            transition={{ duration: panelDuration, ease: [0.22, 1, 0.36, 1] }}
+            transition={panelTransition}
             onClick={stopPropagation}
           >
             {children}

@@ -85,6 +85,8 @@ const AssetSelectModal: React.FC<IAssetSelectModalProps> = ({
       isOpen={isOpen}
       onClose={onClose}
       labelledBy="asset-select-title"
+      placement="top"
+      animateSize
       className="max-w-[44rem] p-0"
     >
       <div className="flex items-center justify-between p-6 pb-4 sm:p-8 sm:pb-5">

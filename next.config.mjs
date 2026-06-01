@@ -11,8 +11,8 @@ const config = () => {
       return [
         {
           source: '/',
-          destination: '/guide',
-          permanent: true,
+          destination: '/en',
+          permanent: false,
         },
       ];
     },

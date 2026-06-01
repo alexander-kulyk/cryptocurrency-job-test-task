@@ -1,3 +1,5 @@
+import { formatDecimal } from "@/07.shared/lib";
+
 /** USD-pegged stablecoin symbols whose amount can be shown directly as USD. */
 const USD_STABLECOINS: ReadonlySet<string> = new Set(["USDT", "USDC", "DAI", "BUSD"]);
 
@@ -16,8 +18,7 @@ export const formatUsd = (value: string | undefined): string | null => {
   if (!Number.isFinite(parsed)) {
     return null;
   }
-  const fixed = parsed >= 1000 ? parsed.toFixed(0) : parsed.toFixed(2);
-  return `≈$${fixed.replace(/\.00$/, "")}`;
+  return `≈$${formatDecimal(parsed)}`;
 };
 
 /** Truncates a long address to `head…tail` for compact display. */

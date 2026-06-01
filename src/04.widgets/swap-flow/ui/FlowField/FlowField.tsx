@@ -31,7 +31,7 @@ const FlowField: React.FC<IFlowFieldProps> = ({
   return (
     <div className="rounded-swap-field border border-swap-border bg-swap-elevated p-5 sm:p-6">
       <p className="mb-4 text-base text-swap-muted">{label}</p>
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex min-h-20 items-center justify-between gap-4">
         <button
           type="button"
           onClick={onOpenSelect}
@@ -50,16 +50,18 @@ const FlowField: React.FC<IFlowFieldProps> = ({
           <ChevronDown className="size-4 text-swap-muted" />
         </button>
 
-        <AmountInput
-          value={amount}
-          onValueChange={onAmountChange}
-          ariaLabel={amountAriaLabel}
-          className="text-4xl sm:text-5xl"
-        />
+        <div className="min-w-0 flex-1 overflow-hidden">
+          <AmountInput
+            value={amount}
+            onValueChange={onAmountChange}
+            ariaLabel={amountAriaLabel}
+            className="text-4xl tabular-nums sm:text-5xl"
+          />
+        </div>
       </div>
-      {usdEstimate ? (
-        <p className="mt-2 text-right text-sm text-swap-muted">{usdEstimate}</p>
-      ) : null}
+      <p className="mt-2 min-h-5 text-right text-sm text-swap-muted">
+        {usdEstimate}
+      </p>
     </div>
   );
 };

@@ -1,4 +1,5 @@
 export { default as classes } from "./classes";
+export { formatDecimal } from "./number";
 export { throttle } from "./throttle";
 export type { IThrottled } from "./throttle";
 export {

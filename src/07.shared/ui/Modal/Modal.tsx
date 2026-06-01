@@ -68,7 +68,7 @@ const Modal: React.FC<IModalProps> = ({
     <AnimatePresence>
       {isOpen ? (
         <motion.div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-swap-page/90 p-4 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex cursor-pointer items-center justify-center bg-swap-page/90 p-4 backdrop-blur-sm"
           variants={overlayVariants}
           initial="hidden"
           animate="visible"
@@ -82,7 +82,7 @@ const Modal: React.FC<IModalProps> = ({
             aria-modal="true"
             aria-labelledby={labelledBy}
             className={classes(
-              "w-full max-w-sm rounded-swap-card border border-swap-border bg-swap-surface p-6 text-swap-foreground shadow-swap-dropdown",
+              "w-full max-w-sm cursor-default rounded-swap-card border border-swap-border bg-swap-surface p-6 text-swap-foreground shadow-swap-dropdown",
               className,
             )}
             variants={panelVariants}

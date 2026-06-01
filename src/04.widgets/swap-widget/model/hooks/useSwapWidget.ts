@@ -1,5 +1,6 @@
 import { useCallback, useRef, useState } from "react";
 import {
+  assetApi,
   useGetAssetsQuery,
   useGetSwapPreviewMutation,
   type IAsset,
@@ -7,7 +8,12 @@ import {
   type ISwapPreviewResponse,
   type SwapDirection,
 } from "@/06.entities";
-import { useThrottledCallback } from "@/07.shared/hooks";
+import {
+  useAbortOnUnmount,
+  useAppDispatch,
+  useThrottledCallback,
+} from "@/07.shared/hooks";
+import { formatDecimal } from "@/07.shared/lib";
 
 const PREVIEW_THROTTLE_MS = 600;
 const DEFAULT_FROM_SYMBOL = "USDT";
@@ -83,6 +89,7 @@ export const useSwapWidget = (): IUseSwapWidgetResult => {
   const [direction, setDirection] = useState<SwapDirection>("from");
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
 
+  const dispatch = useAppDispatch();
   const requestSeqRef = useRef(0);
 
   const { data: defaultFromData } = useGetAssetsQuery({
@@ -114,6 +121,18 @@ export const useSwapWidget = (): IUseSwapWidgetResult => {
     reset: resetPreview,
   } = previewState;
 
+  // Holds the in-flight preview request so a newer request (or a reset) can
+  // abort it. fetchBaseQuery wires an AbortController per request, so calling
+  // `.abort()` cancels the underlying HTTP call rather than just ignoring it.
+  const previewRequestRef = useRef<ReturnType<typeof triggerPreview> | null>(
+    null,
+  );
+
+  const abortPreviewRequest = useCallback((): void => {
+    previewRequestRef.current?.abort();
+    previewRequestRef.current = null;
+  }, []);
+
   const applyPreview = useCallback(
     (
       payload: ISwapPreviewPayload,
@@ -124,9 +143,9 @@ export const useSwapWidget = (): IUseSwapWidgetResult => {
         return;
       }
       if (payload.direction === "from") {
-        setToAmount(data.estimatedReceive);
+        setToAmount(formatDecimal(data.estimatedReceive));
       } else {
-        setFromAmount(data.estimatedGive);
+        setFromAmount(formatDecimal(data.estimatedGive));
       }
     },
     [],
@@ -134,17 +153,47 @@ export const useSwapWidget = (): IUseSwapWidgetResult => {
 
   const previewWorker = useCallback(
     async (payload: ISwapPreviewPayload, seq: number): Promise<void> => {
+      // Cancel any preview still in flight before starting a new one.
+      abortPreviewRequest();
+      const request = triggerPreview(payload);
+      previewRequestRef.current = request;
       try {
-        const data = await triggerPreview(payload).unwrap();
+        const data = await request.unwrap();
         applyPreview(payload, seq, data);
       } catch {
-        // Failures are normalized and surfaced by the global api-error store.
+        // Aborted (superseded) or failed requests are ignored here; an actual
+        // failure is surfaced inline via `previewFailed` — the endpoint is
+        // excluded from the global error overlay.
+      } finally {
+        if (previewRequestRef.current === request) {
+          previewRequestRef.current = null;
+        }
       }
     },
-    [triggerPreview, applyPreview],
+    [triggerPreview, applyPreview, abortPreviewRequest],
   );
 
   const runPreview = useThrottledCallback(previewWorker, PREVIEW_THROTTLE_MS);
+
+  // On unmount, cancel everything this widget started: the in-flight preview
+  // plus the default-pair asset queries. RTK Query does not abort queries on
+  // unsubscribe, so the requests are aborted explicitly here.
+  useAbortOnUnmount(() => {
+    runPreview.cancel();
+    abortPreviewRequest();
+    dispatch(
+      assetApi.util.getRunningQueryThunk("getAssets", {
+        search: DEFAULT_FROM_SYMBOL,
+        page: 1,
+      }),
+    )?.abort();
+    dispatch(
+      assetApi.util.getRunningQueryThunk("getAssets", {
+        search: DEFAULT_TO_SYMBOL,
+        page: 1,
+      }),
+    )?.abort();
+  });
 
   const requestPreview = useCallback(
     (
@@ -157,14 +206,17 @@ export const useSwapWidget = (): IUseSwapWidgetResult => {
       requestSeqRef.current += 1;
       const payload = buildPayload(nextDirection, amount, from, to);
       if (payload) {
+        abortPreviewRequest();
+        resetPreview();
         runPreview(payload, requestSeqRef.current);
       } else {
         runPreview.cancel();
+        abortPreviewRequest();
         resetPreview();
         onInvalid?.();
       }
     },
-    [runPreview, resetPreview],
+    [runPreview, resetPreview, abortPreviewRequest],
   );
 
   const changeFromAmount = useCallback(
@@ -191,8 +243,9 @@ export const useSwapWidget = (): IUseSwapWidgetResult => {
     setDirection("from");
     requestSeqRef.current += 1;
     runPreview.cancel();
+    abortPreviewRequest();
     resetPreview();
-  }, [runPreview, resetPreview]);
+  }, [runPreview, resetPreview, abortPreviewRequest]);
 
   const selectFromAsset = useCallback(
     (asset: IAsset): void => {
@@ -234,8 +287,9 @@ export const useSwapWidget = (): IUseSwapWidgetResult => {
     setDirection("from");
     requestSeqRef.current += 1;
     runPreview.cancel();
+    abortPreviewRequest();
     resetPreview();
-  }, [runPreview, resetPreview]);
+  }, [runPreview, resetPreview, abortPreviewRequest]);
 
   const acknowledgeSuccess = useCallback((): void => {
     setIsSuccessOpen(false);

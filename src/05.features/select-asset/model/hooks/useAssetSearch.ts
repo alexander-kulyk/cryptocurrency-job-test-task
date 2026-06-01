@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useGetAssetsQuery, type IAsset } from "@/06.entities";
+import { assetApi, useGetAssetsQuery, type IAsset } from "@/06.entities";
+import { useAbortOnUnmount, useAppDispatch } from "@/07.shared/hooks";
 
 const SEARCH_DEBOUNCE_MS = 600;
 const SCROLL_THRESHOLD_PX = 64;
@@ -44,7 +45,13 @@ export const useAssetSearch = ({
   const [debouncedSearch, setDebouncedSearch] = useState<string>("");
   const [page, setPage] = useState<number>(1);
 
+  const dispatch = useAppDispatch();
   const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const previousQueryRef = useRef<{
+    enabled: boolean;
+    page: number;
+    search: string;
+  } | null>(null);
 
   const { data, isLoading, isFetching, isError } = useGetAssetsQuery(
     { search: debouncedSearch, page },
@@ -53,6 +60,47 @@ export const useAssetSearch = ({
 
   const assets = data?.data ?? [];
   const hasNextPage = data?.hasNextPage ?? false;
+
+  const abortAssetsRequest = useCallback(
+    (search: string, targetPage: number): void => {
+      dispatch(
+        assetApi.util.getRunningQueryThunk("getAssets", {
+          search,
+          page: targetPage,
+        }),
+      )?.abort();
+    },
+    [dispatch],
+  );
+
+  useEffect(() => {
+    const previous = previousQueryRef.current;
+
+    if (
+      previous?.enabled &&
+      (!enabled ||
+        previous.search !== debouncedSearch ||
+        previous.page !== page)
+    ) {
+      abortAssetsRequest(previous.search, previous.page);
+    }
+
+    previousQueryRef.current = {
+      enabled,
+      search: debouncedSearch,
+      page,
+    };
+  }, [abortAssetsRequest, debouncedSearch, enabled, page]);
+
+  // RTK Query keeps query requests running after unmount; abort the in-flight
+  // assets fetch when the modal/host unmounts. The cache key is keyed on
+  // `search`, so the current search resolves the running paginated request.
+  useAbortOnUnmount(() => {
+    const current = previousQueryRef.current;
+    if (current?.enabled) {
+      abortAssetsRequest(current.search, current.page);
+    }
+  });
 
   const clearDebounce = useCallback((): void => {
     if (debounceTimer.current) {

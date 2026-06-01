@@ -4,7 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { SwapSwitchButton } from "@/05.features";
 import type { IAsset } from "@/06.entities";
-import { Button } from "@/07.shared/ui";
+import { Button, Spinner } from "@/07.shared/ui";
 import {
   formatUsd,
   isUsdStable,
@@ -101,11 +101,17 @@ const ConvertStep: React.FC<IConvertStepProps> = ({
         size="lg"
         block
         onClick={handlers.goToRecipient}
-        disabled={!swap.confirmEnabled}
-        className="mt-5"
+        disabled={!swap.confirmEnabled || swap.isPreviewLoading}
+        className="group relative mt-5 pr-14"
       >
         {t("steps.continue")}
-        <ArrowRight className="size-5" />
+        <ArrowRight className="size-5 transition-transform duration-200 ease-swap group-hover:translate-x-1 group-disabled:translate-x-0" />
+        {swap.isPreviewLoading ? (
+          <Spinner
+            label={t("dropdown.loading")}
+            className="absolute right-6 size-4"
+          />
+        ) : null}
       </Button>
     </div>
   );

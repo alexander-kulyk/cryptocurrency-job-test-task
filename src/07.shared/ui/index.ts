@@ -1,5 +1,7 @@
 export { Button } from "./Button";
 export type { IButtonProps } from "./Button";
+export { BackHomeLink } from "./BackHomeLink";
+export type { IBackHomeLinkProps } from "./BackHomeLink";
 export { Modal } from "./Modal";
 export type { IModalProps } from "./Modal";
 export { TokenIcon } from "./TokenIcon";

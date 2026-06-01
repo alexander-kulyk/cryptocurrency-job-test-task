@@ -1,7 +1,13 @@
 import { DesignView } from "@/03.views";
 
-const DesignPage = () => {
-  return <DesignView />;
+interface IDesignPageProps {
+  params: Promise<{ locale: string }>;
+}
+
+const DesignPage = async ({ params }: IDesignPageProps) => {
+  const { locale } = await params;
+
+  return <DesignView homeHref={`/${locale}`} />;
 };
 
 export default DesignPage;

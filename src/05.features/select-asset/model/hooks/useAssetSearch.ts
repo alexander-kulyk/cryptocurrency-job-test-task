@@ -75,13 +75,12 @@ export const useAssetSearch = ({
 
   useEffect(() => {
     const previous = previousQueryRef.current;
+    const shouldAbortPrevious =
+      previous?.enabled && (!enabled || previous.search !== debouncedSearch);
 
-    if (
-      previous?.enabled &&
-      (!enabled ||
-        previous.search !== debouncedSearch ||
-        previous.page !== page)
-    ) {
+    // Do not abort on page-only changes: the endpoint cache key is the search
+    // term, and aborting by the previous page can cancel the next-page request.
+    if (shouldAbortPrevious) {
       abortAssetsRequest(previous.search, previous.page);
     }
 

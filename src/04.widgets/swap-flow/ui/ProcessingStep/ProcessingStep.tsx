@@ -1,12 +1,12 @@
 "use client";
 
 import { motion, useReducedMotion, type Transition } from "framer-motion";
-import { Check } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { classes } from "@/07.shared/lib";
-import { Spinner, TokenIcon } from "@/07.shared/ui";
-import type { IProcessingStage, ISwapFlowValues } from "../../model";
+import { TokenIcon } from "@/07.shared/ui";
+import type { ISwapFlowValues } from "../../model";
 import { StepProgress } from "../StepProgress";
+import { renderStageIcon } from "./helpers";
 
 const ringTransition: Transition = {
   repeat: Infinity,
@@ -29,26 +29,6 @@ const ProcessingStep: React.FC<IProcessingStepProps> = ({ values }) => {
     toAmount: swap.toAmount,
     toSymbol: swap.toAsset?.symbol ?? "",
   });
-
-  const renderStageIcon = (stage: IProcessingStage): React.ReactNode => {
-    if (stage.status === "done") {
-      return (
-        <span className="flex size-6 items-center justify-center rounded-full bg-swap-accent text-swap-accent-foreground">
-          <Check className="size-3.5" />
-        </span>
-      );
-    }
-    if (stage.status === "active") {
-      return (
-        <span className="flex size-6 items-center justify-center rounded-full border border-swap-accent/40 text-swap-accent">
-          <Spinner label={t("processing.title")} className="size-3.5" />
-        </span>
-      );
-    }
-    return (
-      <span className="size-6 rounded-full border border-swap-border" />
-    );
-  };
 
   return (
     <div>
@@ -96,7 +76,10 @@ const ProcessingStep: React.FC<IProcessingStepProps> = ({ values }) => {
       <ul className="mt-6 flex flex-col gap-3">
         {stages.map((stage) => (
           <li key={stage.id} className="flex items-center gap-3">
-            {renderStageIcon(stage)}
+            {renderStageIcon({
+              stage,
+              spinnerLabel: t("processing.title"),
+            })}
             <span
               className={classes(
                 "text-sm transition-colors",

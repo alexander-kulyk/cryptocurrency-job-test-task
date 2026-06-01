@@ -112,30 +112,27 @@ export const useSwapFlow = (): IUseSwapFlowResult => {
 
   useEffect(() => clearTimers, [clearTimers]);
 
-  const goToConvert = useCallback((): void => {
+  const goToConvert = (): void => {
     dispatch({ type: "GO_TO", step: "convert" });
-  }, []);
+  };
 
-  const goToRecipient = useCallback((): void => {
+  const goToRecipient = (): void => {
     if (!swapValues.confirmEnabled) {
       return;
     }
     dispatch({ type: "GO_TO", step: "recipient" });
-  }, [swapValues.confirmEnabled]);
+  };
 
-  const backToRecipient = useCallback((): void => {
+  const backToRecipient = (): void => {
     dispatch({ type: "GO_TO", step: "recipient" });
-  }, []);
+  };
 
-  const changeWallet = useCallback((value: string): void => {
+  const changeWallet = (value: string): void => {
     dispatch({ type: "SET_WALLET", value });
-  }, []);
+  };
 
-  const pasteWallet = useCallback(async (): Promise<void> => {
-    if (
-      typeof navigator === "undefined" ||
-      !navigator.clipboard?.readText
-    ) {
+  const pasteWallet = async (): Promise<void> => {
+    if (typeof navigator === "undefined" || !navigator.clipboard?.readText) {
       return;
     }
     try {
@@ -144,26 +141,28 @@ export const useSwapFlow = (): IUseSwapFlowResult => {
         dispatch({ type: "SET_WALLET", value: text.trim() });
       }
     } catch {
+      // Clipboard read can reject (denied permission / empty) — fall back to
+      // manual entry rather than surfacing an error.
     }
-  }, []);
+  };
 
-  const goToReview = useCallback((): void => {
+  const goToReview = (): void => {
     if (!isValidWallet(state.walletAddress)) {
       dispatch({ type: "TOUCH_WALLET" });
       return;
     }
     dispatch({ type: "GO_TO", step: "review" });
-  }, [state.walletAddress]);
+  };
 
-  const startProcessing = useCallback((): void => {
+  const startProcessing = (): void => {
     dispatch({ type: "GO_TO", step: "processing" });
-  }, []);
+  };
 
-  const restart = useCallback((): void => {
+  const restart = (): void => {
     clearTimers();
     swapHandlers.reset();
     dispatch({ type: "RESET" });
-  }, [clearTimers, swapHandlers]);
+  };
 
   useEffect(() => {
     if (state.step !== "processing") {

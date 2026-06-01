@@ -2,7 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowDown, ArrowUp } from "lucide-react";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 
 export interface ISwapSwitchButtonProps {
   onSwitch: () => void;
@@ -23,10 +23,10 @@ const SwapSwitchButton: React.FC<ISwapSwitchButtonProps> = ({
     ease: [0.22, 1, 0.36, 1] as const,
   };
 
-  const handleClick = useCallback((): void => {
+  const handleClick = (): void => {
     setIsReversed((current) => !current);
     onSwitch();
-  }, [onSwitch]);
+  };
 
   return (
     <motion.button

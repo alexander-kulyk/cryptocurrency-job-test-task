@@ -8,16 +8,12 @@ import {
 } from "framer-motion";
 import { ShieldCheck } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { AssetSelectModal } from "@/05.features";
 import type { IAsset } from "@/06.entities";
 import { EASE_OUT } from "@/07.shared/lib";
-import { useSwapFlow, type SwapStep } from "../../model";
-import { ConvertStep } from "../ConvertStep";
-import { DoneStep } from "../DoneStep";
-import { ProcessingStep } from "../ProcessingStep";
-import { RecipientStep } from "../RecipientStep";
-import { ReviewStep } from "../ReviewStep";
+import { useSwapFlow } from "../../model";
+import { getModalLabels, getStepHeadings, renderStep } from "./helpers";
 
 const stepVariants: Variants = {
   enter: { opacity: 0, x: 24 },
@@ -35,62 +31,19 @@ const SwapFlow: React.FC = () => {
 
   const stepDuration = reduceMotion ? 0 : 0.28;
   const step = values.step;
+  const heading = getStepHeadings(t)[step];
 
-  const openSend = useCallback((): void => setSelectTarget("from"), []);
-  const openReceive = useCallback((): void => setSelectTarget("to"), []);
-  const closeSelect = useCallback((): void => setSelectTarget(null), []);
+  const openSend = (): void => setSelectTarget("from");
+  const openReceive = (): void => setSelectTarget("to");
+  const closeSelect = (): void => setSelectTarget(null);
 
-  const handleSelectAsset = useCallback(
-    (asset: IAsset): void => {
-      if (selectTarget === "from") {
-        handlers.swap.selectFromAsset(asset);
-      } else if (selectTarget === "to") {
-        handlers.swap.selectToAsset(asset);
-      }
-      setSelectTarget(null);
-    },
-    [selectTarget, handlers.swap],
-  );
-
-  const headings: Record<SwapStep, { title: string; subtitle: string }> = {
-    convert: {
-      title: t("steps.convert.title"),
-      subtitle: t("steps.convert.subtitle"),
-    },
-    recipient: {
-      title: t("recipient.title"),
-      subtitle: t("recipient.subtitle"),
-    },
-    review: { title: t("review.title"), subtitle: t("review.subtitle") },
-    processing: {
-      title: t("processing.title2"),
-      subtitle: t("processing.subtitle"),
-    },
-    done: { title: t("done.title2"), subtitle: t("done.subtitle") },
-  };
-
-  const renderStep = (): React.ReactNode => {
-    switch (step) {
-      case "convert":
-        return (
-          <ConvertStep
-            values={values}
-            handlers={handlers}
-            onOpenSend={openSend}
-            onOpenReceive={openReceive}
-          />
-        );
-      case "recipient":
-        return <RecipientStep values={values} handlers={handlers} />;
-      case "review":
-        return <ReviewStep values={values} handlers={handlers} />;
-      case "processing":
-        return <ProcessingStep values={values} />;
-      case "done":
-        return <DoneStep values={values} handlers={handlers} />;
-      default:
-        return null;
+  const handleSelectAsset = (asset: IAsset): void => {
+    if (selectTarget === "from") {
+      handlers.swap.selectFromAsset(asset);
+    } else if (selectTarget === "to") {
+      handlers.swap.selectToAsset(asset);
     }
+    setSelectTarget(null);
   };
 
   const selectedForModal =
@@ -99,16 +52,6 @@ const SwapFlow: React.FC = () => {
       : selectTarget === "to"
         ? values.swap.toAsset
         : null;
-
-  const modalLabels = {
-    title: t("modal.title"),
-    close: t("modal.close"),
-    searchPlaceholder: t("modal.search"),
-    allCoins: t("modal.allCoins"),
-    loading: t("dropdown.loading"),
-    empty: t("dropdown.empty"),
-    error: t("dropdown.error"),
-  };
 
   const layoutTransition = {
     duration: stepDuration,
@@ -124,11 +67,9 @@ const SwapFlow: React.FC = () => {
     >
       <header className="text-center">
         <h1 className="text-4xl font-bold text-swap-title sm:text-5xl">
-          {headings[step].title}
+          {heading.title}
         </h1>
-        <p className="mt-2 text-base text-swap-muted">
-          {headings[step].subtitle}
-        </p>
+        <p className="mt-2 text-base text-swap-muted">{heading.subtitle}</p>
       </header>
 
       <motion.div
@@ -146,7 +87,13 @@ const SwapFlow: React.FC = () => {
             exit="exit"
             transition={{ duration: stepDuration, ease: EASE_OUT }}
           >
-            {renderStep()}
+            {renderStep({
+              step,
+              values,
+              handlers,
+              onOpenSend: openSend,
+              onOpenReceive: openReceive,
+            })}
           </motion.div>
         </AnimatePresence>
       </motion.div>
@@ -165,7 +112,7 @@ const SwapFlow: React.FC = () => {
         onClose={closeSelect}
         onSelect={handleSelectAsset}
         selectedAsset={selectedForModal}
-        labels={modalLabels}
+        labels={getModalLabels(t)}
       />
     </motion.div>
   );

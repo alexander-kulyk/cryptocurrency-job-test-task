@@ -6,7 +6,7 @@ import {
   useReducedMotion,
   type Variants,
 } from "framer-motion";
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { classes } from "@/07.shared/lib";
 
@@ -54,12 +54,11 @@ const Modal: React.FC<IModalProps> = ({
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onClose]);
 
-  const stopPropagation = useCallback(
-    (event: React.MouseEvent<HTMLDivElement>): void => {
-      event.stopPropagation();
-    },
-    [],
-  );
+  const stopPropagation = (
+    event: React.MouseEvent<HTMLDivElement>,
+  ): void => {
+    event.stopPropagation();
+  };
 
   if (typeof document === "undefined") {
     return null;

@@ -7,7 +7,7 @@ import {
 
 const DesignView: React.FC = () => {
   return (
-    <main className='w-full overflow-x-hidden bg-landing-surface'>
+    <main className='w-full max-w-full overflow-x-clip bg-landing-surface'>
       <LandingHero />
       <LandingManifesto />
       <LandingSteps />

@@ -29,22 +29,22 @@ const FlowField: React.FC<IFlowFieldProps> = ({
   placeholder,
 }) => {
   return (
-    <div className="rounded-swap-field bg-swap-elevated p-5">
-      <p className="mb-3 text-sm text-swap-muted">{label}</p>
+    <div className="rounded-swap-field border border-swap-border bg-swap-elevated p-5 sm:p-6">
+      <p className="mb-4 text-base text-swap-muted">{label}</p>
       <div className="flex items-center justify-between gap-3">
         <button
           type="button"
           onClick={onOpenSelect}
           aria-label={selectLabel}
           aria-haspopup="dialog"
-          className="flex shrink-0 items-center gap-2 rounded-full bg-swap-surface py-1.5 pl-1.5 pr-3 transition-colors hover:bg-swap-border"
+          className="flex h-14 shrink-0 items-center gap-3 rounded-full border border-swap-strong-border bg-swap-chip py-2 pl-2 pr-4 transition-colors hover:bg-swap-border"
         >
           {asset ? (
-            <TokenIcon src={asset.assetImage} symbol={asset.symbol} size={28} />
+            <TokenIcon src={asset.assetImage} symbol={asset.symbol} size={32} />
           ) : (
-            <span className="size-7 shrink-0 rounded-full bg-swap-border" />
+            <span className="size-8 shrink-0 rounded-full bg-swap-border" />
           )}
-          <span className="text-base font-bold text-swap-foreground">
+          <span className="text-lg font-bold text-swap-foreground">
             {asset?.symbol ?? placeholder}
           </span>
           <ChevronDown className="size-4 text-swap-muted" />
@@ -54,7 +54,7 @@ const FlowField: React.FC<IFlowFieldProps> = ({
           value={amount}
           onValueChange={onAmountChange}
           ariaLabel={amountAriaLabel}
-          className="text-3xl"
+          className="text-4xl sm:text-5xl"
         />
       </div>
       {usdEstimate ? (

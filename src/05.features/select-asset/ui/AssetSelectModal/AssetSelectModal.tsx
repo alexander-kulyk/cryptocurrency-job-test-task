@@ -76,12 +76,12 @@ const AssetSelectModal: React.FC<IAssetSelectModalProps> = ({
       isOpen={isOpen}
       onClose={onClose}
       labelledBy="asset-select-title"
-      className="max-w-lg p-0"
+      className="max-w-[44rem] p-0"
     >
-      <div className="flex items-center justify-between p-6 pb-4">
+      <div className="flex items-center justify-between p-6 pb-4 sm:p-8 sm:pb-5">
         <h2
           id="asset-select-title"
-          className="text-xl font-bold text-swap-foreground"
+          className="text-2xl font-bold text-swap-foreground"
         >
           {labels.title}
         </h2>
@@ -89,13 +89,13 @@ const AssetSelectModal: React.FC<IAssetSelectModalProps> = ({
           type="button"
           onClick={onClose}
           aria-label={labels.close}
-          className="flex size-9 items-center justify-center rounded-swap-control bg-swap-elevated text-swap-muted transition-colors hover:bg-swap-border hover:text-swap-foreground"
+          className="flex size-12 items-center justify-center rounded-swap-control bg-swap-chip text-swap-muted transition-colors hover:bg-swap-border hover:text-swap-foreground"
         >
           <X className="size-5" />
         </button>
       </div>
 
-      <div className="px-6">
+      <div className="px-6 sm:px-8">
         <div className="relative">
           <Search className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-swap-muted" />
           <input
@@ -104,7 +104,7 @@ const AssetSelectModal: React.FC<IAssetSelectModalProps> = ({
             value={searchTerm}
             onChange={handleSearchChange}
             placeholder={labels.searchPlaceholder}
-            className="w-full rounded-swap-field bg-swap-elevated py-3.5 pl-12 pr-4 text-base text-swap-foreground outline-none placeholder:text-swap-muted focus-visible:ring-3 focus-visible:ring-swap-accent/30"
+            className="w-full rounded-swap-field border border-swap-strong-border bg-swap-elevated py-4 pl-12 pr-4 text-lg text-swap-foreground outline-none placeholder:text-swap-muted focus-visible:border-swap-accent focus-visible:ring-3 focus-visible:ring-swap-accent/20"
           />
         </div>
 
@@ -114,7 +114,7 @@ const AssetSelectModal: React.FC<IAssetSelectModalProps> = ({
               key={symbol}
               type="button"
               onClick={() => handleQuickPick(symbol)}
-              className="flex items-center gap-2 rounded-full border border-swap-border bg-swap-elevated px-3 py-2 text-sm font-semibold text-swap-foreground transition-colors hover:bg-swap-border"
+              className="flex items-center gap-2 rounded-full border border-swap-strong-border bg-swap-chip px-3.5 py-2 text-base font-semibold text-swap-foreground transition-colors hover:bg-swap-border"
             >
               {asset ? (
                 <TokenIcon
@@ -133,7 +133,7 @@ const AssetSelectModal: React.FC<IAssetSelectModalProps> = ({
         </div>
       </div>
 
-      <div className="mt-5 border-t border-swap-border px-6 pt-4">
+      <div className="mt-5 border-t border-swap-border px-6 pt-5 sm:px-8">
         <p className="text-xs font-semibold uppercase tracking-wide text-swap-muted">
           {labels.allCoins}
         </p>
@@ -141,7 +141,7 @@ const AssetSelectModal: React.FC<IAssetSelectModalProps> = ({
 
       <div
         onScroll={handlers.handleListScroll}
-        className="scroll-bar flex max-h-[22rem] flex-col gap-1 overflow-y-auto px-4 pb-4 pt-2"
+        className="scroll-bar flex max-h-[26rem] flex-col gap-1 overflow-y-auto px-4 pb-5 pt-3 sm:px-6"
       >
         {isLoading ? (
           <div className="flex items-center justify-center gap-2 py-8 text-sm text-swap-muted">
@@ -166,7 +166,7 @@ const AssetSelectModal: React.FC<IAssetSelectModalProps> = ({
           const network = getNetworkLabel(asset.symbol);
           const isActive = asset.id === selectedAsset?.id;
           const rowClasses = classes(
-            "flex w-full items-center gap-3 rounded-swap-field px-3 py-3 text-left transition-colors hover:bg-swap-elevated",
+            "flex w-full items-center gap-4 rounded-swap-field px-3 py-3 text-left transition-colors hover:bg-swap-elevated",
             isActive && "bg-swap-elevated",
           );
           return (
@@ -194,7 +194,7 @@ const AssetSelectModal: React.FC<IAssetSelectModalProps> = ({
                 <Pill
                   tone="outline"
                   size="sm"
-                  className="ml-auto border-swap-border text-swap-muted"
+                  className="ml-auto border-swap-strong-border text-swap-muted"
                 >
                   {network}
                 </Pill>

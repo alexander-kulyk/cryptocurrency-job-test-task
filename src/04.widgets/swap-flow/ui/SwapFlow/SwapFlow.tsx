@@ -6,6 +6,7 @@ import {
   useReducedMotion,
   type Variants,
 } from "framer-motion";
+import { ShieldCheck } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useCallback, useState } from "react";
 import { AssetSelectModal } from "@/05.features";
@@ -112,12 +113,12 @@ const SwapFlow: React.FC = () => {
   };
 
   return (
-    <div className="flex w-full flex-col items-center gap-6">
+    <div className="flex w-full flex-col items-center gap-7">
       <header className="text-center">
-        <h1 className="text-4xl font-bold text-swap-foreground sm:text-5xl">
+        <h1 className="text-4xl font-bold text-swap-title sm:text-5xl">
           {headings[step].title}
         </h1>
-        <p className="mt-2 text-sm text-swap-muted">
+        <p className="mt-2 text-base text-swap-muted">
           {headings[step].subtitle}
         </p>
       </header>
@@ -125,7 +126,7 @@ const SwapFlow: React.FC = () => {
       <motion.div
         layout
         transition={{ duration: stepDuration, ease: EASE_OUT }}
-        className="w-full max-w-md overflow-hidden rounded-swap-card bg-swap-surface p-6 shadow-swap-card sm:p-8"
+        className="w-full max-w-[40rem] overflow-hidden rounded-swap-card border border-swap-border bg-swap-surface p-6 shadow-swap-card sm:p-10"
       >
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
@@ -141,7 +142,10 @@ const SwapFlow: React.FC = () => {
         </AnimatePresence>
       </motion.div>
 
-      <p className="text-center text-xs text-swap-muted">{t("footerNote")}</p>
+      <p className="flex items-center justify-center gap-2 text-center text-sm text-swap-subtle">
+        <ShieldCheck className="size-4" aria-hidden />
+        {t("footerNote")}
+      </p>
 
       <AssetSelectModal
         isOpen={selectTarget !== null}

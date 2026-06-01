@@ -50,7 +50,7 @@ const ReviewStep: React.FC<IReviewStepProps> = ({ values, handlers }) => {
         <StepProgress step="review" label={t("steps.progressLabel")} />
       </div>
 
-      <div className="mt-5 rounded-swap-field bg-swap-elevated p-5">
+      <div className="mt-5 rounded-swap-field border border-swap-border bg-swap-elevated p-5 sm:p-6">
         <div className="flex items-center justify-between gap-3">
           <div className="flex min-w-0 items-center gap-3">
             {swap.fromAsset ? (
@@ -72,8 +72,9 @@ const ReviewStep: React.FC<IReviewStepProps> = ({ values, handlers }) => {
           ) : null}
         </div>
 
-        <div className="my-3 flex items-center">
+        <div className="my-4 flex items-center gap-4">
           <ArrowRightLeft className="size-4 rotate-90 text-swap-accent" />
+          <span className="h-px flex-1 bg-swap-border" aria-hidden />
         </div>
 
         <div className="flex items-center justify-between gap-3">
@@ -98,7 +99,7 @@ const ReviewStep: React.FC<IReviewStepProps> = ({ values, handlers }) => {
         </div>
       </div>
 
-      <dl className="mt-3 rounded-swap-field bg-swap-elevated p-5 text-sm">
+      <dl className="mt-5 rounded-swap-field border border-swap-border bg-swap-elevated p-5 text-base sm:p-6">
         <div className="flex items-center justify-between gap-4 py-1.5">
           <dt className="text-swap-muted">{t("review.rate")}</dt>
           <dd className="text-right font-medium text-swap-foreground">
@@ -120,7 +121,7 @@ const ReviewStep: React.FC<IReviewStepProps> = ({ values, handlers }) => {
             {t("review.arrivalValue")}
           </dd>
         </div>
-        <div className="flex items-center justify-between gap-4 py-1.5">
+        <div className="mt-2 flex items-center justify-between gap-4 border-t border-swap-border pt-4">
           <dt className="text-swap-muted">{t("review.toAddress")}</dt>
           <dd className="text-right font-medium text-swap-foreground">
             {truncateAddress(values.walletAddress)}

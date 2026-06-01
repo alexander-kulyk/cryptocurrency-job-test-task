@@ -40,7 +40,7 @@ const RecipientStep: React.FC<IRecipientStepProps> = ({ values, handlers }) => {
         {t("recipient.label", { symbol })}
       </label>
 
-      <div className="mt-3 flex items-center gap-2 rounded-swap-field bg-swap-elevated p-2 pl-4">
+      <div className="mt-3 flex items-center gap-2 rounded-swap-field border border-swap-border bg-swap-elevated p-2 pl-4 transition-colors focus-within:border-swap-strong-border">
         <ClipboardPaste className="size-5 shrink-0 text-swap-muted" />
         <input
           id="recipient-address"
@@ -72,9 +72,9 @@ const RecipientStep: React.FC<IRecipientStepProps> = ({ values, handlers }) => {
         <p className="mt-2 text-sm text-swap-muted">{t("recipient.helper")}</p>
       )}
 
-      <div className="mt-5 flex items-start gap-3 rounded-swap-field border border-swap-accent/40 bg-swap-accent/10 p-4">
+      <div className="mt-5 flex items-start gap-4 rounded-swap-field border border-swap-accent/45 bg-swap-accent/10 p-4 sm:p-5">
         <ShieldCheck className="mt-0.5 size-5 shrink-0 text-swap-accent" />
-        <p className="text-sm text-swap-foreground">
+        <p className="text-base leading-7 text-swap-foreground">
           {t.rich("recipient.guarantee", {
             strong: (chunks) => (
               <span className="font-semibold">{chunks}</span>

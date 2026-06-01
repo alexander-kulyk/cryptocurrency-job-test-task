@@ -60,7 +60,7 @@ const DoneStep: React.FC<IDoneStepProps> = ({ values, handlers }) => {
         </p>
       </div>
 
-      <dl className="mt-6 rounded-swap-field bg-swap-elevated p-5 text-sm">
+      <dl className="mt-6 rounded-swap-field border border-swap-border bg-swap-elevated p-5 text-base sm:p-6">
         <div className="flex items-center justify-between gap-4 py-1.5">
           <dt className="text-swap-muted">{t("done.sent")}</dt>
           <dd className="font-medium text-swap-foreground">
@@ -73,7 +73,7 @@ const DoneStep: React.FC<IDoneStepProps> = ({ values, handlers }) => {
             {swap.toAmount} {toSymbol}
           </dd>
         </div>
-        <div className="flex items-center justify-between gap-4 py-1.5">
+        <div className="mt-2 flex items-center justify-between gap-4 border-t border-swap-border pt-4">
           <dt className="text-swap-muted">{t("done.transaction")}</dt>
           <dd>
             <a

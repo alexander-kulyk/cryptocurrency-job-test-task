@@ -51,35 +51,70 @@
 
 /* ── Swap widget design tokens (Task 1) ──────────────────────────────
    Reusable design-system tokens derived from the mockup. The widget is a
-   dark surface with a vivid green accent and a light token dropdown panel.
+   dark surface with a vivid green accent and matching dark picker panels.
    Token names map to Tailwind v4 utilities: --color-* → bg/text/border-*,
    --radius-* → rounded-*, --shadow-* → shadow-*, --ease-* → ease-*. */
 @theme {
   /* Colors */
-  --color-swap-surface: hsl(240 6% 10%); /* card background */
-  --color-swap-elevated: hsl(240 5% 14%); /* inner field background */
-  --color-swap-border: hsl(240 5% 22%); /* dividers / field borders */
-  --color-swap-foreground: hsl(0 0% 100%); /* symbol + amount text */
-  --color-swap-muted: hsl(240 4% 64%); /* labels + token names */
-  --color-swap-accent: hsl(145 80% 45%); /* primary action (Next) + arrows */
-  --color-swap-accent-hover: hsl(145 80% 40%);
-  --color-swap-accent-foreground: hsl(240 6% 8%);
-  --color-swap-dropdown: hsl(0 0% 100%); /* light dropdown panel */
-  --color-swap-dropdown-foreground: hsl(240 10% 12%);
-  --color-swap-dropdown-muted: hsl(240 4% 46%);
-  --color-swap-dropdown-hover: hsl(240 5% 96%);
+  --color-swap-page: hsl(196 26% 3%);
+  --color-swap-page-band: hsl(196 19% 6%);
+  --color-swap-surface: hsl(204 18% 8%); /* card background */
+  --color-swap-elevated: hsl(204 16% 11%); /* inner field background */
+  --color-swap-chip: hsl(204 14% 14%);
+  --color-swap-border: hsl(205 14% 20%); /* dividers / field borders */
+  --color-swap-strong-border: hsl(205 13% 25%);
+  --color-swap-foreground: hsl(210 20% 94%); /* symbol + amount text */
+  --color-swap-title: hsl(210 18% 90%);
+  --color-swap-muted: hsl(211 16% 62%); /* labels + token names */
+  --color-swap-subtle: hsl(210 15% 48%);
+  --color-swap-disabled: hsl(210 12% 31%);
+  --color-swap-accent: hsl(157 72% 48%); /* primary action (Next) + arrows */
+  --color-swap-accent-hover: hsl(157 76% 43%);
+  --color-swap-accent-foreground: hsl(0 0% 100%);
+  --color-swap-dropdown: hsl(204 18% 8%);
+  --color-swap-dropdown-foreground: hsl(210 20% 94%);
+  --color-swap-dropdown-muted: hsl(211 16% 62%);
+  --color-swap-dropdown-hover: hsl(204 14% 14%);
 
   /* Radius */
-  --radius-swap-card: 1.5rem;
-  --radius-swap-field: 1rem;
-  --radius-swap-control: 0.75rem;
+  --radius-swap-card: 2rem;
+  --radius-swap-field: 1.25rem;
+  --radius-swap-control: 1rem;
 
   /* Shadows */
-  --shadow-swap-card: 0 24px 80px rgba(0, 0, 0, 0.45);
-  --shadow-swap-dropdown: 0 18px 50px rgba(0, 0, 0, 0.22);
+  --shadow-swap-card:
+    0 32px 90px rgba(0, 0, 0, 0.55),
+    0 0 80px rgba(26, 206, 126, 0.08);
+  --shadow-swap-dropdown:
+    0 32px 90px rgba(0, 0, 0, 0.6),
+    0 24px 80px rgba(26, 206, 126, 0.12);
 
   /* Transitions */
   --ease-swap: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer utilities {
+  .swap-page-background {
+    background:
+      radial-gradient(
+        circle at 76% 76%,
+        rgba(34, 211, 139, 0.16),
+        rgba(34, 211, 139, 0.05) 18rem,
+        transparent 34rem
+      ),
+      radial-gradient(
+        circle at 25% 84%,
+        rgba(34, 211, 139, 0.1),
+        transparent 28rem
+      ),
+      linear-gradient(
+        180deg,
+        var(--color-swap-page) 0%,
+        var(--color-swap-page) 75%,
+        var(--color-swap-page-band) 75%,
+        var(--color-swap-page-band) 100%
+      );
+  }
 }
 
 /* ── Landing page design tokens (Task 2) ─────────────────────────────

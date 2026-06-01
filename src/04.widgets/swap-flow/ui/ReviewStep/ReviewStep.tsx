@@ -12,7 +12,6 @@ import {
 } from "../../model";
 import { StepProgress } from "../StepProgress";
 
-/** Presentational, non-API values shown on the review card (see notes). */
 const NETWORK_FEE = "0.25 USDT";
 
 export interface IReviewStepProps {

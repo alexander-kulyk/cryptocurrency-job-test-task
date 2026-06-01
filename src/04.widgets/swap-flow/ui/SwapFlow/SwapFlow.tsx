@@ -19,14 +19,12 @@ import { ProcessingStep } from "../ProcessingStep";
 import { RecipientStep } from "../RecipientStep";
 import { ReviewStep } from "../ReviewStep";
 
-/** Incoming step slides in from the right, outgoing slides out to the left. */
 const stepVariants: Variants = {
   enter: { opacity: 0, x: 24 },
   center: { opacity: 1, x: 0 },
   exit: { opacity: 0, x: -24 },
 };
 
-/** Which field's token-select modal is open, if any. */
 type SelectTarget = "from" | "to" | null;
 
 const SwapFlow: React.FC = () => {

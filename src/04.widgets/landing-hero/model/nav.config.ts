@@ -1,7 +1,3 @@
-/**
- * Nav link structure. Labels are resolved from `landing.nav.<key>` so the menu
- * is fully localized; `href` is an in-page anchor.
- */
 export interface INavLink {
   key: string;
   href: string;

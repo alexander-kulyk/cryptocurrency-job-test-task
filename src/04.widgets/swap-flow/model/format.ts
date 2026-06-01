@@ -1,15 +1,10 @@
 import { formatDecimal } from "@/07.shared/lib";
 
-/** USD-pegged stablecoin symbols whose amount can be shown directly as USD. */
 const USD_STABLECOINS: ReadonlySet<string> = new Set(["USDT", "USDC", "DAI", "BUSD"]);
 
 export const isUsdStable = (symbol: string | undefined): boolean =>
   symbol ? USD_STABLECOINS.has(symbol.toUpperCase()) : false;
 
-/**
- * Formats a numeric string as a `≈$N.NN` USD estimate. Returns null for empty
- * or non-numeric input so the caller can omit the line gracefully.
- */
 export const formatUsd = (value: string | undefined): string | null => {
   if (!value) {
     return null;
@@ -21,7 +16,6 @@ export const formatUsd = (value: string | undefined): string | null => {
   return `≈$${formatDecimal(parsed)}`;
 };
 
-/** Truncates a long address to `head…tail` for compact display. */
 export const truncateAddress = (
   address: string,
   head = 6,

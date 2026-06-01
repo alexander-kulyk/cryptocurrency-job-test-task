@@ -13,9 +13,7 @@ export interface IUseAssetDropdownValues {
   isOpen: boolean;
   searchTerm: string;
   assets: IAsset[];
-  /** First page is loading. */
   isLoading: boolean;
-  /** Any request (incl. next page) is in flight. */
   isFetching: boolean;
   isError: boolean;
   hasNextPage: boolean;

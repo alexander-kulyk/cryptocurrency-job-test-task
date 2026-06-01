@@ -6,18 +6,14 @@ const SEARCH_DEBOUNCE_MS = 600;
 const LOAD_MORE_ZONE_PX = 96;
 
 export interface IUseAssetSearchParams {
-  /** When false, the underlying query is skipped (e.g. modal closed). */
   enabled: boolean;
 }
 
 export interface IUseAssetSearchValues {
   searchTerm: string;
   assets: IAsset[];
-  /** First page is loading. */
   isLoading: boolean;
-  /** Any request (incl. next page) is in flight. */
   isFetching: boolean;
-  /** A paginated follow-up page is loading. */
   isFetchingMore: boolean;
   isError: boolean;
   hasNextPage: boolean;
@@ -34,12 +30,6 @@ export interface IUseAssetSearchResult {
   handlers: IUseAssetSearchHandlers;
 }
 
-/**
- * Data layer for asset selection: debounced search + paginated infinite scroll
- * over the RTK Query assets endpoint. Open/close is owned by the caller — this
- * hook only fetches while `enabled` is true. Shared by the inline dropdown and
- * the swap-flow token modal.
- */
 export const useAssetSearch = ({
   enabled,
 }: IUseAssetSearchParams): IUseAssetSearchResult => {

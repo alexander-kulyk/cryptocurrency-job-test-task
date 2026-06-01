@@ -33,10 +33,6 @@ const CloseIcon: React.FC = () => (
   </svg>
 );
 
-/**
- * Top navigation for the hero. Inline links on tablet+, a slide-down drawer on
- * mobile (animated with AnimatePresence). Brand + link labels are localized.
- */
 const LandingNav: React.FC = () => {
   const t = useTranslations("landing");
   const { isOpen, close, toggle } = useMobileMenu();

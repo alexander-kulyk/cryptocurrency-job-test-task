@@ -1,5 +1,3 @@
-// export * from "./config";
-// export { defaultLocale, locales } from "./config";
 export {
   getPathname, Link,
   redirect, usePathname,

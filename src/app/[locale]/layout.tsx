@@ -44,7 +44,6 @@ const RootLayout = async ({ children, params }: IRootLayoutProps) => {
             >
               <AppLayout>{children}</AppLayout>
             </ThemeProvider>
-            {/* dont set z-index 10000000000000! */}
             <Toaster />
           </ReduxProvider>
         </NextIntlClientProvider>

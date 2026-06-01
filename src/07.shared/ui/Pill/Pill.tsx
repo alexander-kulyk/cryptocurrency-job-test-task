@@ -25,10 +25,6 @@ export interface IPillProps
   children: React.ReactNode;
 }
 
-/**
- * Small rounded label ("pill"/"badge"). Used for the hero callout and the
- * per-row tags in the benefits block. Colours come from `@theme` tokens.
- */
 const Pill: React.FC<IPillProps> = ({
   tone,
   size,

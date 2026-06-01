@@ -1,9 +1,5 @@
 import { useEffect, type RefObject } from "react";
 
-/**
- * Calls `handler` when a pointer event fires outside the referenced element.
- * Pass a memoized `handler` to avoid re-binding listeners every render.
- */
 export const useOnClickOutside = <T extends HTMLElement>(
   ref: RefObject<T | null>,
   handler: () => void,

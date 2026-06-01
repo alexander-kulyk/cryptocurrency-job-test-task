@@ -1,7 +1,6 @@
 import { classes } from "@/07.shared/lib";
 
 export interface ISpinnerProps {
-  /** Accessible label; pass a localized string from the caller. */
   label?: string;
   className?: string;
 }

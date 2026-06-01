@@ -11,30 +11,16 @@ const overlayVariants: Variants = {
 };
 
 export interface IBenefitRowProps {
-  /** Localized left-hand description. */
   description: string;
-  /** Localized center title. */
   title: string;
-  /** Localized right-hand tag/pill copy. */
   tag: string;
-  /** Public path of the photographic background revealed when active. */
   image: string;
-  /** Whether this row is the highlighted one. */
   isActive: boolean;
-  /** Disable the reveal transition for reduced-motion users. */
   reduceMotion: boolean;
-  /** Hover / focus → activate this row. */
   onActivate: () => void;
-  /** Pointer leave → release control back to the auto-cycle. */
   onRelease: () => void;
 }
 
-/**
- * One row of the benefits block: [description] [big title] [pill]. When active,
- * its photographic background fades/scales in beneath a dark gradient (which
- * masks the asset's baked-in text) and the title switches to the yellow accent.
- * Only opacity/transform animate.
- */
 const BenefitRow: React.FC<IBenefitRowProps> = ({
   description,
   title,

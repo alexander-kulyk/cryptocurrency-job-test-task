@@ -6,13 +6,11 @@ import { TokenIcon } from "@/07.shared/ui";
 export interface IFlowFieldProps {
   label: string;
   asset: IAsset | null;
-  /** Opens the token-select modal for this field. */
   onOpenSelect: () => void;
   selectLabel: string;
   amount: string;
   onAmountChange: (value: string) => void;
   amountAriaLabel: string;
-  /** Pre-formatted `≈$N` estimate, or null to hide the line. */
   usdEstimate: string | null;
   placeholder: string;
 }

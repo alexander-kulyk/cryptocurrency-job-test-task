@@ -3,8 +3,6 @@ import { setupListeners } from "@reduxjs/toolkit/query";
 import { baseRtkApi } from "@/07.shared/api";
 import { createApiErrorMiddleware, apiErrorReducer } from "@/07.shared/model";
 
-// The swap preview surfaces its own errors inline (e.g. an unsupported pair
-// returns "assetNotFound"), so it is excluded from the global error overlay.
 const apiErrorMiddleware = createApiErrorMiddleware({
   ignoredEndpoints: ["getSwapPreview"],
 });

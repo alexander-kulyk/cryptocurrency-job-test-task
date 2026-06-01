@@ -1,10 +1,8 @@
 import { classes } from "@/07.shared/lib";
 import type { SwapStep } from "../../model";
 
-/** Number of visible segments in the indicator (the design shows four). */
 const SEGMENT_COUNT = 4;
 
-/** Active-segment count per step (1-based, capped at SEGMENT_COUNT). */
 const ACTIVE_SEGMENTS: Readonly<Record<SwapStep, number>> = {
   convert: 1,
   recipient: 2,
@@ -32,7 +30,6 @@ const StepProgress: React.FC<IStepProgressProps> = ({ step, label }) => {
     >
       {Array.from({ length: SEGMENT_COUNT }, (_, index) => {
         const isActive = index < active;
-        // The leading active segment is rendered wider, matching the design.
         const isLeadingActive = index === active - 1;
         return (
           <span

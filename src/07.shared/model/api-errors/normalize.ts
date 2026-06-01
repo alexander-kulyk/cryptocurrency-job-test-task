@@ -25,11 +25,6 @@ const extractMessage = (data: unknown): string | null => {
   return null;
 };
 
-/**
- * Transforms any RTK Query / thunk rejection value into the consistent
- * {@link IApiError} shape (without an id) before it reaches the store.
- * Reusable so error handling is never duplicated inside components.
- */
 export const normalizeApiError = (
   error: unknown,
   endpoint?: string,

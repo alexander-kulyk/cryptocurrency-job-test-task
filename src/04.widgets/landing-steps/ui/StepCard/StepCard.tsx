@@ -5,15 +5,10 @@ import type { StepTone } from '../../model';
 
 export interface IStepCardProps {
   tone: StepTone;
-  /** Localized brand chip ("Gifty"). */
   brand: string;
-  /** Localized small label above the title ("01" / "Create, add, share"). */
   eyebrow: string;
-  /** Localized card title. */
   title: string;
-  /** Localized card body. */
   body: string;
-  /** Localized repeated accent word ("START"); shown only on the highlight card. */
   accentWord?: string;
 }
 

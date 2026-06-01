@@ -52,7 +52,6 @@ export interface ISwapWidgetValues {
   previewFailed: boolean;
   confirmEnabled: boolean;
   isSuccessOpen: boolean;
-  /** Successful preview payload (rate + USD equivalents), or null. */
   preview: ISwapPreviewResponse | null;
 }
 
@@ -64,7 +63,6 @@ export interface ISwapWidgetHandlers {
   switchAssets: () => void;
   confirm: () => void;
   acknowledgeSuccess: () => void;
-  /** Clears assets, amounts, direction and the cached preview. */
   reset: () => void;
 }
 
@@ -73,12 +71,6 @@ export interface IUseSwapWidgetResult {
   handlers: ISwapWidgetHandlers;
 }
 
-/**
- * Brain of the swap widget. Owns client state (selected assets, amounts,
- * direction, success modal) and orchestrates the throttled RTK Query preview.
- * The default pair (USDT → BTC) is resolved from the assets endpoint and used
- * as a fallback until the user picks a token, so no init effect is needed.
- */
 export const useSwapWidget = (): IUseSwapWidgetResult => {
   const [fromAssetSelected, setFromAssetSelected] = useState<IAsset | null>(
     null,
@@ -121,9 +113,6 @@ export const useSwapWidget = (): IUseSwapWidgetResult => {
     reset: resetPreview,
   } = previewState;
 
-  // Holds the in-flight preview request so a newer request (or a reset) can
-  // abort it. fetchBaseQuery wires an AbortController per request, so calling
-  // `.abort()` cancels the underlying HTTP call rather than just ignoring it.
   const previewRequestRef = useRef<ReturnType<typeof triggerPreview> | null>(
     null,
   );
@@ -153,7 +142,6 @@ export const useSwapWidget = (): IUseSwapWidgetResult => {
 
   const previewWorker = useCallback(
     async (payload: ISwapPreviewPayload, seq: number): Promise<void> => {
-      // Cancel any preview still in flight before starting a new one.
       abortPreviewRequest();
       const request = triggerPreview(payload);
       previewRequestRef.current = request;
@@ -161,9 +149,6 @@ export const useSwapWidget = (): IUseSwapWidgetResult => {
         const data = await request.unwrap();
         applyPreview(payload, seq, data);
       } catch {
-        // Aborted (superseded) or failed requests are ignored here; an actual
-        // failure is surfaced inline via `previewFailed` — the endpoint is
-        // excluded from the global error overlay.
       } finally {
         if (previewRequestRef.current === request) {
           previewRequestRef.current = null;
@@ -175,9 +160,6 @@ export const useSwapWidget = (): IUseSwapWidgetResult => {
 
   const runPreview = useThrottledCallback(previewWorker, PREVIEW_THROTTLE_MS);
 
-  // On unmount, cancel everything this widget started: the in-flight preview
-  // plus the default-pair asset queries. RTK Query does not abort queries on
-  // unsubscribe, so the requests are aborted explicitly here.
   useAbortOnUnmount(() => {
     runPreview.cancel();
     abortPreviewRequest();

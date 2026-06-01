@@ -1,6 +1,5 @@
 export interface IThrottled<TArgs extends unknown[]> {
   (...args: TArgs): void;
-  /** Cancels a pending trailing invocation. */
   cancel: () => void;
 }
 

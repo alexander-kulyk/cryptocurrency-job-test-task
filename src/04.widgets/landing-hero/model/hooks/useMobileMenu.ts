@@ -7,10 +7,6 @@ export interface IUseMobileMenuResult {
   toggle: () => void;
 }
 
-/**
- * Client state for the hero's mobile navigation drawer. Locks body scroll while
- * open and closes on Escape so the overlay never traps the user.
- */
 export const useMobileMenu = (): IUseMobileMenuResult => {
   const [isOpen, setIsOpen] = useState(false);
 

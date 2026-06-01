@@ -5,9 +5,7 @@ import {
 } from "@/04.widgets/swap-widget/model";
 import type { IProcessingStage, SwapStep } from "../types";
 
-/** Delay between processing checklist stages advancing (ms). */
 const STAGE_INTERVAL_MS = 1100;
-/** Extra delay after the last stage completes before showing the receipt (ms). */
 const COMPLETE_DELAY_MS = 700;
 
 const INITIAL_STAGES: readonly IProcessingStage[] = [
@@ -70,7 +68,6 @@ const flowReducer = (state: IFlowState, action: FlowAction): IFlowState => {
   }
 };
 
-/** Minimum length below which a wallet address is treated as invalid. */
 const MIN_WALLET_LENGTH = 8;
 
 const isValidWallet = (value: string): boolean =>
@@ -102,13 +99,6 @@ export interface IUseSwapFlowResult {
   handlers: ISwapFlowHandlers;
 }
 
-/**
- * Orchestrates the multi-step swap flow. Server state (assets + preview) stays
- * in RTK Query via the composed `useSwapWidget`; flow-only client state
- * (current step, wallet address, processing checklist) lives here in a
- * `useReducer`. The processing stages advance on timers (the final swap has no
- * backend) and clean themselves up on unmount / restart.
- */
 export const useSwapFlow = (): IUseSwapFlowResult => {
   const { values: swapValues, handlers: swapHandlers } = useSwapWidget();
   const [state, dispatch] = useReducer(flowReducer, undefined, createInitialState);
@@ -154,7 +144,6 @@ export const useSwapFlow = (): IUseSwapFlowResult => {
         dispatch({ type: "SET_WALLET", value: text.trim() });
       }
     } catch {
-      // Clipboard read can be denied by the browser; the user can paste manually.
     }
   }, []);
 
@@ -176,7 +165,6 @@ export const useSwapFlow = (): IUseSwapFlowResult => {
     dispatch({ type: "RESET" });
   }, [clearTimers, swapHandlers]);
 
-  // Drive the processing checklist while on the processing step.
   useEffect(() => {
     if (state.step !== "processing") {
       return;
@@ -197,7 +185,6 @@ export const useSwapFlow = (): IUseSwapFlowResult => {
       }, STAGE_INTERVAL_MS * stageCount + COMPLETE_DELAY_MS),
     );
     return clearTimers;
-    // Re-run only when the step changes; clearTimers is stable.
   }, [state.step, clearTimers]);
 
   const walletValid = isValidWallet(state.walletAddress);

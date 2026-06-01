@@ -48,6 +48,7 @@ export interface ISwapWidgetValues {
   toAsset: IAsset | null;
   fromAmount: string;
   toAmount: string;
+  isDefaultAssetsLoading: boolean;
   isPreviewLoading: boolean;
   previewFailed: boolean;
   confirmEnabled: boolean;
@@ -84,14 +85,16 @@ export const useSwapWidget = (): IUseSwapWidgetResult => {
   const dispatch = useAppDispatch();
   const requestSeqRef = useRef(0);
 
-  const { data: defaultFromData } = useGetAssetsQuery({
-    search: DEFAULT_FROM_SYMBOL,
-    page: 1,
-  });
-  const { data: defaultToData } = useGetAssetsQuery({
-    search: DEFAULT_TO_SYMBOL,
-    page: 1,
-  });
+  const { data: defaultFromData, isFetching: isDefaultFromFetching } =
+    useGetAssetsQuery({
+      search: DEFAULT_FROM_SYMBOL,
+      page: 1,
+    });
+  const { data: defaultToData, isFetching: isDefaultToFetching } =
+    useGetAssetsQuery({
+      search: DEFAULT_TO_SYMBOL,
+      page: 1,
+    });
 
   const defaultFrom =
     defaultFromData?.data.find((asset) => asset.symbol === DEFAULT_FROM_SYMBOL) ??
@@ -104,6 +107,9 @@ export const useSwapWidget = (): IUseSwapWidgetResult => {
 
   const fromAsset = fromAssetSelected ?? defaultFrom;
   const toAsset = toAssetSelected ?? defaultTo;
+  const isDefaultAssetsLoading =
+    (!fromAssetSelected && isDefaultFromFetching) ||
+    (!toAssetSelected && isDefaultToFetching);
 
   const [triggerPreview, previewState] = useGetSwapPreviewMutation();
   const {
@@ -294,6 +300,7 @@ export const useSwapWidget = (): IUseSwapWidgetResult => {
       toAsset,
       fromAmount,
       toAmount,
+      isDefaultAssetsLoading,
       isPreviewLoading,
       previewFailed: isPreviewError,
       confirmEnabled,

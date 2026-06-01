@@ -82,11 +82,17 @@ const ConvertStep: React.FC<IConvertStepProps> = ({
         </div>
 
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-          <SwapSwitchButton
-            onSwitch={handlers.swap.switchAssets}
-            label={t("switch")}
-            disabled={!canSwitch}
-          />
+          {swap.isDefaultAssetsLoading ? (
+            <div className="flex size-14 shrink-0 items-center justify-center rounded-swap-control border border-swap-strong-border bg-swap-chip text-swap-accent shadow-[0_12px_30px_rgba(0,0,0,0.28)]">
+              <Spinner label={t("dropdown.loading")} className="size-5" />
+            </div>
+          ) : (
+            <SwapSwitchButton
+              onSwitch={handlers.swap.switchAssets}
+              label={t("switch")}
+              disabled={!canSwitch}
+            />
+          )}
         </div>
       </div>
 
